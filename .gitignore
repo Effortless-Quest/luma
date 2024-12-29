@@ -1,0 +1,29 @@
+# Node modules
+/node_modules/
+
+# TypeScript build directory
+/dist/
+
+# Electron log files
+*.log
+
+# Electron & VSCode settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# npm-debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Compiled JavaScript files (if using TypeScript)
+/src/**/*.js
+
+# Optional: Ignore compiled TypeScript files in the dist folder
+/dist/**/*.js
+
+# Ignore virtual environment directory
+/python-env/venv/

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electron App</title>
+  <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="./global.css">
+</head>
+<body>
+  <h1>AI Chat</h1>
+
+  <!-- Chat box and user input area -->
+  <div>
+    <textarea id="userMessage" placeholder="Type your message here..." rows="4" cols="50"></textarea>
+    <button id="sendMessage">Send</button>
+  </div>
+  
+  <!-- Display AI's response -->
+  <div id="aiResponse"></div>
+
+  <!-- Import the chat logic -->
+  <script src="../dist/chat/chat.js"></script>
+  
+  <!-- Chat logic to send message to server and display AI's response -->
+  <script>
+    document.getElementById('sendMessage').addEventListener('click', async () => {
+      const message = document.getElementById('userMessage').value;
+
+      // Send the message to the Python server
+      const response = await fetch('http://localhost:5000/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+      // Display AI's response
+      document.getElementById('aiResponse').innerText = data.response;
+    });
+  </script>
+
+  <!-- Link to main.js if required for Electron-specific logic -->
+  <script src="main.js"></script>
+</body>
+</html>
