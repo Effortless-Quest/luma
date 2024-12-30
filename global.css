@@ -1,21 +1,194 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
   
-  #chat-box {
-    border: 1px solid #ccc;
-    padding: 10px;
-    height: 300px;
+  body {
+    font-family: Arial, sans-serif;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust to 4 columns */
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 100vh;
     overflow-y: auto;
   }
   
-  #user-input {
-    width: 80%;
-    padding: 5px;
+  .box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   
-  #send-btn {
-    padding: 5px 10px;
+  .box h3 {
+    margin-bottom: 10px;
   }
+  
+  .header {
+    grid-column: 1; /* Welcome Back section spans column 1 */
+    width: 100%;
+    height: 150px;
+    background-color: #007BFF; /* Background color */
+    color: white;
+    border-radius: 10px; /* Rounded corners */
+    padding: 15px; /* Padding inside the box */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Soft shadow */
+    text-align: center;
+    z-index: 10; /* Ensures it stays above other content */
+  }
+  
+  .header h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  .header p {
+    font-size: 14px;
+  }
+  
+  .roadmap {
+    grid-column: 1; /* Roadmap spans column 1 */
+    margin-top: 20px; /* Adjusted for spacing after the header */
+    height: 600px; /* Flexible height */
+    background-color: #f9f9f9; /* Optional background color */
+    padding: 20px; /* Optional padding for inner content */
+    
+  }
+  
+  .reminders {
+    grid-column: 2 / 5; /* Span columns 2 and 3 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 350px; /* Allow it to scale with content */
+    margin-top: -160px;
+  }
+  
+  .reminder {
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .chat {
+    grid-column: 2 / 4; /* Chat spans only column 2 */
+    height: 395px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-top: -430px;
+  }
+  
+  .chat input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .directory {
+    grid-column: 4 / 5; /* Directory spans only column 3 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 395px; 
+    margin-top: -430px;
+  }
+  
+  .directory button {
+    background: #007BFF;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .directory button:hover {
+    background: #0056b3;
+  }
+  
+  /* For screens less than 769px */
+/* For screens less than 769px */
+/* For screens less than 769px */
+@media (max-width: 700px) {
+    .header {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-bottom: 20px;
+      padding: 20px;
+      width: auto; /* Auto width for responsiveness */
+    }
+  
+    .roadmap {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 0;
+      height: 300px;
+    }
+  
+    .reminders {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 10px; /* Adds spacing below the header */
+      height: 310px;
+    }
+  
+    .chat,
+    .directory {
+      grid-column: span 4; /* Stack chat and directory to span all 4 columns */
+      margin-top: 10px; /* Adds spacing between sections */
+      height: auto; /* Adjust height for responsiveness */
+    }
+  
+    .chat {
+      height: 300px; /* Adjust height for chat */
+    }
+  
+    .directory {
+      height: 310px; /* Adjust height for directory */
+    }
+  }
+  
+  
+  
+  
+  /* For screens between 769px and 1024px */
+  @media (min-width: 701px) and (max-width: 1024px) {
+    .header {
+      grid-column: span 4; /* Adjust to span all three columns */
+      margin-bottom: 20px;
+      padding: 20px;
+      width: auto; /* Auto width for responsiveness */
+    }
+  
+    .roadmap {
+      grid-column: 1 / span 2; /* Remains in the first column */
+      margin-top: 0;
+      height: 300px;
+    }
+  
+    .reminders {
+      grid-column: 1 / span 2; /* Move reminders to column 1 */
+      margin-top: 10px; /* Adds spacing below the header */
+      height: 310px;
+    }
+  
+    .chat, 
+    .directory {
+      grid-column: 3 / span 2; /* Stack chat and directory in columns 2 and 3 */
+    }
+  
+    .chat {
+      margin-top: -310px; /* Adds spacing below reminders */
+      height: 300px;
+    }
+  
+    .directory {
+      margin-top: -320px; /* Adds spacing below chat */
+      height: 310px; /* Adjust height for responsiveness */
+    }
+  }
+  
   

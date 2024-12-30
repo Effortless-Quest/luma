@@ -1,48 +1,47 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electron App</title>
-  <!-- Link to the external CSS file -->
+  <meta name="viewport" content="width=device-width,  initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Dashboard</title>
   <link rel="stylesheet" href="./global.css">
 </head>
 <body>
-  <h1>AI Chat</h1>
-
-  <!-- Chat box and user input area -->
-  <div>
-    <textarea id="userMessage" placeholder="Type your message here..." rows="4" cols="50"></textarea>
-    <button id="sendMessage">Send</button>
+  <div class="box header">
+    <h2>Welcome Back, [User's Name]</h2>
+    <p>Date: [Today’s Date] | Time: [Current Time]</p>
   </div>
-  
-  <!-- Display AI's response -->
-  <div id="aiResponse"></div>
 
-  <!-- Import the chat logic -->
-  <script src="../dist/chat/chat.js"></script>
-  
-  <!-- Chat logic to send message to server and display AI's response -->
-  <script>
-    document.getElementById('sendMessage').addEventListener('click', async () => {
-      const message = document.getElementById('userMessage').value;
+  <div class="box roadmap">
+    <h3>Road Map</h3>
+    <p>Interactive timeline goes here...</p>
+  </div>
 
-      // Send the message to the Python server
-      const response = await fetch('http://localhost:5000/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
+  <div class="box reminders">
+    <h3>Reminders</h3>
+    <div class="reminder">Reminder 1</div>
+    <div class="reminder">Reminder 2</div>
+    <div class="reminder">Reminder 3</div>
+    <div class="reminder">Reminder 4</div>
+    <div class="reminder">Reminder 5</div>
+  </div>
 
-      const data = await response.json();
-      // Display AI's response
-      document.getElementById('aiResponse').innerText = data.response;
-    });
-  </script>
+  <div class="box chat">
+    <h3>Chat with Luma</h3>
+    <p>[User]: Hi</p>
+    <p>[Luma]: Hello! How can I assist you today?</p>
+    <input type="text" placeholder="Type a message..." />
+  </div>
 
-  <!-- Link to main.js if required for Electron-specific logic -->
-  <script src="main.js"></script>
+  <div class="box directory">
+    <button>Settings</button>
+    <button>Resources</button>
+    <button>Memories</button>
+    <button>Organize Files</button>
+    <button>My Quest</button>
+    <button>Invention Center</button>
+  </div>
 </body>
+
 </html>

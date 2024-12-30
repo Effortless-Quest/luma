@@ -2,12 +2,17 @@ import { app, BrowserWindow } from 'electron';
 import { exec } from 'child_process';
 import path from 'path';
 
+// Log the current working directory
+console.log("Current working directory:", process.cwd());
+
 let mainWindow: BrowserWindow | null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth:500,
+    minHeight:580,
     webPreferences: {
       nodeIntegration: true,  // Ensure Node integration is enabled for access to Node.js
     },

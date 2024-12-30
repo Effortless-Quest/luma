@@ -1,0 +1,25 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chat</title>
+  <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="./chat.css">
+</head>
+<body>
+  <div class="chat-container">
+    <h2>AI Chat</h2>
+
+    <!-- Chat box and user input area -->
+    <div id="chat-box" class="messages"></div>
+
+    <textarea id="user-input" placeholder="Type your message here..." rows="4"></textarea>
+    <button id="send-btn">Send</button>
+  </div>
+
+  <!-- Import TypeScript logic compiled to JavaScript -->
+  <script src="../dist/chat/chat.js"></script>
+</body>
+</html>
