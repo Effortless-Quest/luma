@@ -5,19 +5,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,  initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="./global.css">
+  <link rel="stylesheet" href="./index.css">
 </head>
-<body>
+<body class="hand-drawn-text">
   <div class="box header">
-    <h2>Welcome Back, [User's Name]</h2>
-    <p>Date: [Today’s Date] | Time: [Current Time]</p>
+    <div class="profile-icon">
+      <!-- Placeholder for the profile image -->
+      <img id="profileImage" src="./public/img/youu.png" alt="Profile Icon" />
+      <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
+    </div>
+    <div class="welcome-info">
+      <h2>Welcome Back </h2>
+      <h2>[User's Name]</h2>
+      <p>Date: [Today’s Date]</p>
+      <p>Time: [Current Time]</p>
+    </div>
   </div>
+  
+ <!-- Road Map Section -->
+<div class="box-roadmap">
+  <h3>Road Map</h3>
+  <!-- Wrap button in anchor tag for navigation -->
+  <a href="./app/pages/roadmap-page/roadmap.html">
+    <button class="expand-button">
+      <img src="./public/img/expand.png" alt="Custom Image" />
+    </button>
+  </a>
+  <div class="box-roadmap-obsidian"></div>
+</div>
 
-  <div class="box roadmap">
-    <h3>Road Map</h3>
-    <p>Interactive timeline goes here...</p>
-  </div>
-
+  
+  <!-- Reminders Section -->
   <div class="box reminders">
     <h3>Reminders</h3>
     <div class="reminder">Reminder 1</div>
@@ -27,14 +45,23 @@
     <div class="reminder">Reminder 5</div>
   </div>
 
-  <div class="box chat">
+    <!-- Chat Section -->
+  <div class="luma-box-chat">
+    <!-- Image Button in Top Right Corner -->
+    <a href="./app/pages/chat-page/chat.html">
+      <button class="luma-expand-button">
+        <img src="./public/img/expand.png" alt="Custom Image" />
+      </button>
+    </a>
+    
     <h3>Chat with Luma</h3>
-    <p>[User]: Hi</p>
-    <p>[Luma]: Hello! How can I assist you today?</p>
-    <input type="text" placeholder="Type a message..." />
+    <div class="box-luma-conversation"></div>
+    <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
   </div>
 
-  <div class="box directory">
+
+  <!-- Directory Section -->
+  <div class="box directory hand-drawn-text">
     <button>Settings</button>
     <button>Resources</button>
     <button>Memories</button>
@@ -43,5 +70,4 @@
     <button>Invention Center</button>
   </div>
 </body>
-
 </html>

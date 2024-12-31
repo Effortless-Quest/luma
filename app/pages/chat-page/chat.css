@@ -1,67 +1,195 @@
-/* chat.css */
-
-/* Basic chat styles */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f4f4f4;
-  }
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Optional: Disable vertical scrolling if needed */
+  white-space: nowrap; /* Prevent content from wrapping, enabling scrolling */
+  margin: 0; /* Avoid unwanted gaps */
+  padding: 0;
+}
+
+/* Back Button Styling */
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000; /* Ensure it's above other elements */
+  cursor: pointer;
+}
+
+.back-button img {
+  width: 35px; /* Adjust based on your image size */
+  height: auto;
+}
+
+/* Container styles for the columns */
+.roadmap-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  height: 85vh;
+}
+
+.column-left {
+  width: 35%; /* Smaller width for left column */
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  height: 100%;
+  margin-top: 20px;
+}
+
+.column-left-notes {
+  width: 25%; /* Smaller width for left column */
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  height: 630px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.luma-box-chat {
   
-  .chat-container {
-    width: 400px;
-    max-width: 100%;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
+  height: 700px;
+  background-color: white;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  position: relative; /* Add relative positioning here */
+}
+
+.notes-box-chat {
+  display: flex; /* This ensures the columns are displayed side by side */
+  gap: 20px; /* Optional: Adds space between the columns */
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  height: 100%; /* Ensure it stretches to fill the container */
+  position: relative;
+}
+
+.luma-box-chat-input {
+  width: 85%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+.luma-expand-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px; /* Adjust the size of the button */
+  height: 50px; /* Adjust the size of the button */
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.luma-expand-button img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 5px; /* Optional: for rounded corners */
+}
+
+.box-luma-conversation {    
+  position: relative;
+  /* Optional: You can define a fixed size for the roadmap container */
+  width: 88%; /* or a fixed size, e.g., 600px */
+  height: 520px; /* or adjust as needed */
+  border: 2px solid black;
+  border-radius: 10px;
+  grid-column: 1; /* Roadmap spans column 1 */
+  margin-top: 20px; /* Adjusted for spacing after the header */
+  background-color: white; /* Optional background color */
+  padding: 20px; /* Optional padding for inner content */
+}
+
+
+.column-right {
+  width: 55%; /* Larger width for right column */
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  height: 100%;
+  margin-top: 20px;
+}
+
+.column-right-notes {
+  width: 65%; /* Larger width for right column */
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  height: 630px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.box-notes {    
+  position: relative;
+  /* Optional: You can define a fixed size for the roadmap container */
+  width: 94%; /* or a fixed size, e.g., 600px */
+  height: 620px; /* or adjust as needed */
+  border: 2px solid black;
+  border-radius: 10px;
+  grid-column: 1; /* Roadmap spans column 1 */
+  margin-top: 20px; /* Adjusted for spacing after the header */
+  background-color: white; /* Optional background color */
+  padding: 20px; /* Optional padding for inner content */
+}
+
+/* Optional: Styling for headings inside columns */
+h3 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.box {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 700px) { 
+  .column-left {
+      width: 35%; /* Smaller width for left column */
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
   
-  .messages {
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: 15px;
-  }
+    .column-right {
+      width: 40%; /* Larger width for right column */
+      background-color: #e0e0e0;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
+
+    .box-luma-conversation {
+      width: 70%;
+    }
+}
+
+@media (min-width: 701px) and (max-width: 1024px) {
+  .column-left {
+      width: 35%; /* Smaller width for left column */
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
   
-  .message {
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    max-width: 80%;
-  }
-  
-  .user-message {
-    background-color: #DCF8C6;
-    margin-left: auto;
-  }
-  
-  .ai-message {
-    background-color: #E0E0E0;
-  }
-  
-  textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    resize: none;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
+    .column-right {
+      width: 45%; /* Larger width for right column */
+      background-color: #e0e0e0;
+      padding: 20px;
+      border-radius: 8px;
+      height: 100%;
+    }
+
+    .box-luma-conversation {
+      width: 80%;
+    }
+}

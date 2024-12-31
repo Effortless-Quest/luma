@@ -2,6 +2,13 @@ import { app, BrowserWindow } from 'electron';
 import { exec } from 'child_process';
 import path from 'path';
 
+
+
+// Enable live reload
+require('electron-reload')(path.join(__dirname, '../'), {
+  electron: path.join(__dirname, '../node_modules/.bin/electron'),
+});
+
 // Log the current working directory
 console.log("Current working directory:", process.cwd());
 
@@ -9,8 +16,8 @@ let mainWindow: BrowserWindow | null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1050,
+    height: 800,
     minWidth:500,
     minHeight:580,
     webPreferences: {

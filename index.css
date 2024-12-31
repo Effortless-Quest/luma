@@ -1,0 +1,316 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @font-face {
+    font-family: 'Virgil';
+    src: url('./assets/fonts/Virgil-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  .hand-drawn-text {
+    font-family: 'Virgil', sans-serif;
+  }
+  
+  
+  body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjust to 4 columns */
+    grid-template-rows: auto 1fr auto;
+    gap: 10px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    height: 100vh;
+    overflow-y: auto;
+    font-family: 'Virgil', sans-serif;
+    padding-bottom: 20px;
+}
+
+/* Apply Inter font to all headings */
+h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Virgil', sans-serif;
+}
+
+  
+  .box.header {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    grid-column: 1;
+    background-color: white;
+    height: 150px;
+  }
+  
+  .profile-icon img {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+  }
+  
+  .welcome-info {
+    margin-left: 10px;
+  }
+  
+  .welcome-info h2 {
+    margin: 0;
+    margin-top: 5px;
+    font-size: 13px;
+    margin-left: 20px;
+  
+  }
+  
+  .welcome-info p {
+    margin: 0;
+    margin-top: 12px;
+    font-size: 11px;
+    margin-left: 20px;
+  }
+  
+
+.expand-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 50px; /* Adjust the size of the button */
+  height: 50px; /* Adjust the size of the button */
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.expand-button img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 5px; /* Optional: for rounded corners */
+}
+
+.box-roadmap {    
+  position: relative;
+  /* Optional: You can define a fixed size for the roadmap container */
+  width: 100%; /* or a fixed size, e.g., 600px */
+  height: 400px; /* or adjust as needed */
+  border: 2px solid black;
+  border-radius: 10px;
+  grid-column: 1; /* Roadmap spans column 1 */
+  margin-top: 20px; /* Adjusted for spacing after the header */
+  height: 590px; /* Flexible height */
+  background-color: white; /* Optional background color */
+  padding: 20px; /* Optional padding for inner content */
+}
+
+.box-roadmap-obsidian {    
+  position: relative;
+  /* Optional: You can define a fixed size for the roadmap container */
+  width: 100%; /* or a fixed size, e.g., 600px */
+  height: 505px; /* or adjust as needed */
+  border: 2px solid black;
+  border-radius: 10px;
+  grid-column: 1; /* Roadmap spans column 1 */
+  margin-top: 20px; /* Adjusted for spacing after the header */
+  background-color: white; /* Optional background color */
+  padding: 20px; /* Optional padding for inner content */
+}
+
+  
+  .reminders {
+    grid-column: 2 / 5; /* Span columns 2 and 3 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 350px; /* Allow it to scale with content */
+    margin-top: -160px;
+  }
+  
+  .reminder {
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .luma-box-chat {
+    grid-column: 2 / 4; /* Chat spans only column 2 */
+    height: 420px;
+    background-color: white;
+    padding: 20px;
+    margin-top: -430px;
+    border: 2px solid black;
+    border-radius: 10px;
+    position: relative; /* Add relative positioning here */
+  }
+  
+  .luma-box-chat-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+  }
+
+  .luma-expand-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 50px; /* Adjust the size of the button */
+    height: 50px; /* Adjust the size of the button */
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .luma-expand-button img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 5px; /* Optional: for rounded corners */
+  }
+
+  .box-luma-conversation {    
+    position: relative;
+    /* Optional: You can define a fixed size for the roadmap container */
+    width: 100%; /* or a fixed size, e.g., 600px */
+    height: 270px; /* or adjust as needed */
+    border: 2px solid black;
+    border-radius: 10px;
+    grid-column: 1; /* Roadmap spans column 1 */
+    margin-top: 20px; /* Adjusted for spacing after the header */
+    background-color: white; /* Optional background color */
+    padding: 20px; /* Optional padding for inner content */
+  }
+  
+  .directory {
+    grid-column: 4 / 5; /* Directory spans only column 3 */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 395px; 
+    margin-top: -430px;
+  }
+  
+  .directory button {
+    background: #007BFF;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Virgil', sans-serif;
+  }
+  
+  .directory button:hover {
+    background: #0056b3;
+  }
+  
+  /* For screens less than 769px */
+/* For screens less than 769px */
+/* For screens less than 769px */
+@media (max-width: 700px) {
+    .box.header {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-bottom: 20px;
+      padding: 20px;
+      width: auto; /* Auto width for responsiveness */
+    }
+  
+    .box-roadmap {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 0;
+      height: 300px;
+    }
+
+    .box-roadmap-obsidian {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 10px;
+      height: 220px;
+    }
+
+    .box-luma-conversation {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 10px;
+      height: 180px;
+    }
+  
+    .reminders {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 10px; /* Adds spacing below the header */
+      height: 310px;
+    }
+  
+    .luma-box-chat,
+    .directory {
+      grid-column: span 4; /* Stack chat and directory to span all 4 columns */
+      margin-top: 10px; /* Adds spacing between sections */
+      height: auto; /* Adjust height for responsiveness */
+    }
+  
+    .luma-box-chat {
+      height: 300px; /* Adjust height for chat */
+    }
+  
+    .directory {
+      height: 310px; /* Adjust height for directory */
+    }
+  }
+  
+  
+  
+  
+  /* For screens between 769px and 1024px */
+  @media (min-width: 701px) and (max-width: 1024px) {
+    .box.header {
+      grid-column: span 4; /* Adjust to span all three columns */
+      margin-bottom: 20px;
+      padding: 20px;
+      width: auto; /* Auto width for responsiveness */
+    }
+  
+    .box-roadmap {
+      grid-column: 1 / span 2; /* Remains in the first column */
+      margin-top: 0;
+      height: 300px;
+    }
+
+    .box-roadmap-obsidian {
+      grid-column: 1 / span 2; /* Remains in the first column */
+      margin-top: 10px;
+      height: 220px;
+    }
+  
+    .reminders {
+      grid-column: 1 / span 2; /* Move reminders to column 1 */
+      margin-top: 10px; /* Adds spacing below the header */
+      height: 310px;
+    }
+  
+    .luma-box-chat, 
+    .directory {
+      grid-column: 3 / span 2; /* Stack chat and directory in columns 2 and 3 */
+    }
+  
+    .luma-box-chat {
+      margin-top: -310px; /* Adds spacing below reminders */
+      height: 300px;
+    }
+
+    .box-luma-conversation {
+      grid-column: span 4; /* Span all 4 columns */
+      margin-top: 10px;
+      height: 180px;
+    }
+  
+    .directory {
+      margin-top: -320px; /* Adds spacing below chat */
+      height: 310px; /* Adjust height for responsiveness */
+    }
+  }
+  
+  
