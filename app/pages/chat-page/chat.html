@@ -12,30 +12,102 @@
     <img src="../../../public/img/back-arrow.png" alt="Back" />
   </a>
 
-  <div class="roadmap-container">
+  <div class="lumachat-container">
     <!-- Left Column -->
     <div class="column-left">
       <div class="box">
-            <!-- Chat Section -->
-  <div class="luma-box-chat">
-    
-    <h3>Chat with Luma</h3>
-    <div class="box-luma-conversation"></div>
-    <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
-  </div>
+        <!-- Chat Section -->
+        <div class="luma-box-chat">
+          <h3>Chat with Luma</h3>
+          <div class="box-luma-conversation"></div>
+          <!-- Container for the input box and send button -->
+          <div class="chat-input-container">
+            <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
+            <!-- Send message button as an image -->
+            <button class="send-message-button">
+              <img src="../../../public/img/sendbutton.png" alt="Send Message" />
+            </button>
+          </div>
+        </div>
       </div>
-      
     </div>
 
     <!-- Right Column -->
     <div class="column-right">
-      
       <div class="box">
         <div class="notes-box-chat">
-          <div class="column-left-notes"></div>
-          <div class="column-right-notes"></div>
+          <!-- Left Column: List of Notes -->
+          <div class="column-left-notes">
+            <h3>Notes List</h3>
+            <ul id="notes-list">
+              <!-- List of notes will appear here -->
+            </ul>
+            <button id="add-note-button">Add Note</button>
+          </div>
+          
+          <!-- Right Column: Selected Note Editor -->
+          <div class="column-right-notes">
+            <h3>Note Editor</h3>
+            <textarea id="note-editor" placeholder="Edit your note here..." disabled></textarea>
+            <button id="save-note-button" disabled>Save Note</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <script>
+    // JavaScript to handle adding and editing notes
+    let notes = [];
+    let currentNoteIndex = null;
+
+    // Add a new note
+    document.getElementById("add-note-button").addEventListener("click", function() {
+      const noteContent = prompt("Enter your note:");
+
+      if (noteContent) {
+        notes.push(noteContent);
+        updateNotesList();
+      }
+    });
+
+    // Update the list of notes in the left column
+    function updateNotesList() {
+      const notesList = document.getElementById("notes-list");
+      notesList.innerHTML = ''; // Clear the existing list
+
+      notes.forEach((note, index) => {
+        const li = document.createElement("li");
+        li.textContent = note;
+        li.addEventListener("click", function() {
+          openNoteEditor(index);
+        });
+        notesList.appendChild(li);
+      });
+    }
+
+    // Open the note editor with the selected note
+    function openNoteEditor(index) {
+      currentNoteIndex = index;
+      document.getElementById("note-editor").value = notes[index];
+      document.getElementById("note-editor").disabled = false;
+      document.getElementById("save-note-button").disabled = false;
+    }
+
+    // Save the edited note
+    document.getElementById("save-note-button").addEventListener("click", function() {
+      if (currentNoteIndex !== null) {
+        const editedContent = document.getElementById("note-editor").value;
+        notes[currentNoteIndex] = editedContent;
+        updateNotesList();
+        document.getElementById("note-editor").disabled = true;
+        document.getElementById("save-note-button").disabled = true;
+      }
+    });
+
+    // Initialize the notes list when the page loads
+    updateNotesList();
+  </script>
 </body>
 </html>
+

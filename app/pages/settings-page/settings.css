@@ -1,0 +1,85 @@
+/* Back Button Styling */
+.back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Ensure it's above other elements */
+    cursor: pointer;
+  }
+  
+  .back-button img {
+    width: 35px; /* Adjust based on your image size */
+    height: auto;
+  }
+
+/* Container styles for the columns */
+.settings-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    height: 85vh;
+  }
+
+  .column-left {
+    width: 35%; /* Smaller width for left column */
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    height: 100%;
+    margin-top: 20px;
+  }
+
+  .column-right {
+    width: 55%; /* Larger width for right column */
+    background-color: #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    height: 100%;
+    margin-top: 20px;
+  }
+
+  /* Optional: Styling for headings inside columns */
+  h3 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+
+  .box {
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 700px) { 
+    .column-left {
+        width: 35%; /* Smaller width for left column */
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        height: 100%;
+      }
+    
+      .column-right {
+        width: 40%; /* Larger width for right column */
+        background-color: #e0e0e0;
+        padding: 20px;
+        border-radius: 8px;
+        height: 100%;
+      }
+  }
+
+  @media (min-width: 701px) and (max-width: 1024px) {
+    .column-left {
+        width: 35%; /* Smaller width for left column */
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 8px;
+        height: 100%;
+      }
+    
+      .column-right {
+        width: 45%; /* Larger width for right column */
+        background-color: #e0e0e0;
+        padding: 20px;
+        border-radius: 8px;
+        height: 100%;
+      }
+  }

@@ -1,16 +1,24 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
 body {
   overflow-x: auto; /* Enable horizontal scrolling */
-  overflow-y: hidden; /* Optional: Disable vertical scrolling if needed */
-  white-space: nowrap; /* Prevent content from wrapping, enabling scrolling */
-  margin: 0; /* Avoid unwanted gaps */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin: 0;
   padding: 0;
+  height: 100%; /* Ensure body takes up full height */
 }
 
 /* Back Button Styling */
 .back-button {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 5px;
+  left: 5px;
   z-index: 1000; /* Ensure it's above other elements */
   cursor: pointer;
 }
@@ -21,123 +29,176 @@ body {
 }
 
 /* Container styles for the columns */
-.roadmap-container {
-  display: flex;
-  justify-content: space-between;
+.lumachat-container {
+  margin-top: 10px;
+  display: flex; /* Use flexbox to display columns side by side */
+  justify-content: space-between; /* Ensure there’s space between columns */
   padding: 20px;
-  height: 85vh;
+  min-height: 100vh; /* Set to 100vh to cover full height */
+  gap: 0px; /* Optional: Adds space between the columns */
+  flex-wrap: wrap; /* Ensure elements wrap if necessary */
+  overflow-y: auto; /* Allow vertical scrolling for the container */
+}
+
+.column-left, .column-right {
+  flex: 1; /* Both columns take up equal space */
+  padding: 20px;
+  border-radius: 8px;
+  height: 100%; /* Ensure columns take up full height of the parent container */
 }
 
 .column-left {
-  width: 35%; /* Smaller width for left column */
-  background-color: #f4f4f4;
+  display: flex; /* Use flexbox for layout inside */
+  flex-direction: column; /* Arrange children vertically */
   padding: 20px;
   border-radius: 8px;
-  height: 100%;
-  margin-top: 20px;
+  height: 100%; /* Take up full height of parent container */
+  overflow: hidden; /* Prevent any overflow issues */
 }
 
-.column-left-notes {
-  width: 25%; /* Smaller width for left column */
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
-  height: 630px;
-  margin-top: 20px;
-  position: relative;
+.column-right {
+  background-color:rgba(224, 224, 224, 0);
+  height: 100%; /* Ensure right column stretches to the full height of the screen */
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
 }
 
+/* Specific for the Chat Box */
 .luma-box-chat {
-  
-  height: 700px;
+  margin-top: 20px;
+  flex-grow: 1; /* Allow it to expand and fill remaining space */
   background-color: white;
   padding: 20px;
   border: 2px solid black;
   border-radius: 10px;
-  position: relative; /* Add relative positioning here */
+  height: 90vh;
+  position: relative;
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  width: 100%; /* Ensure it fills the width of the parent column */
+  box-sizing: border-box; /* Include padding in total height and width */
 }
 
-.notes-box-chat {
-  display: flex; /* This ensures the columns are displayed side by side */
-  gap: 20px; /* Optional: Adds space between the columns */
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
-  height: 100%; /* Ensure it stretches to fill the container */
-  position: relative;
+.chat-input-container {
+  display: flex; /* Use flexbox to align items on the same line */
+  align-items: center; /* Vertically align items to the center */
+  margin-top: 10px;
 }
 
 .luma-box-chat-input {
   width: 85%;
   padding: 10px;
-  margin-top: 10px;
   border: 2px solid black;
   border-radius: 10px;
+  margin-left: 10px;
 }
 
-.luma-expand-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 50px; /* Adjust the size of the button */
-  height: 50px; /* Adjust the size of the button */
-  padding: 0;
-  background-color: transparent;
+.send-message-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
+  width: 10%;
+}
+
+.send-message-button img {
+  width: 40px;
+  height: auto;
+}
+
+.box-luma-conversation {
+  position: relative;
+  width: 100%; /* Full width inside the chat box */
+  height: 73vh;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+}
+
+/* Notes Box (Right Column) */
+.notes-box-chat {
+  background:rgb(255, 255, 255);
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Adds space between the left and right parts of the notes section */
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  min-height: 85vh;
+  margin-top: 20px;
+  height: 90vh;
+}
+
+/* Notes List Section (Left Column) */
+.column-left-notes {
+  background-color:rgb(255, 255, 255);
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+}
+
+#notes-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#notes-list li {
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+#add-note-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
   border: none;
   cursor: pointer;
 }
 
-.luma-expand-button img {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 5px; /* Optional: for rounded corners */
+#add-note-button:hover {
+  background-color: #0056b3;
 }
 
-.box-luma-conversation {    
-  position: relative;
-  /* Optional: You can define a fixed size for the roadmap container */
-  width: 88%; /* or a fixed size, e.g., 600px */
-  height: 520px; /* or adjust as needed */
-  border: 2px solid black;
-  border-radius: 10px;
-  grid-column: 1; /* Roadmap spans column 1 */
-  margin-top: 20px; /* Adjusted for spacing after the header */
-  background-color: white; /* Optional background color */
-  padding: 20px; /* Optional padding for inner content */
-}
-
-
-.column-right {
-  width: 55%; /* Larger width for right column */
-  background-color: #e0e0e0;
-  padding: 20px;
-  border-radius: 8px;
-  height: 100%;
-  margin-top: 20px;
-}
-
+/* Note Editor Section (Right Column) */
 .column-right-notes {
-  width: 65%; /* Larger width for right column */
-  background-color: #e0e0e0;
-  padding: 20px;
-  border-radius: 8px;
-  height: 630px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.box-notes {    
-  position: relative;
-  /* Optional: You can define a fixed size for the roadmap container */
-  width: 94%; /* or a fixed size, e.g., 600px */
-  height: 620px; /* or adjust as needed */
+  background-color: #fff;
   border: 2px solid black;
   border-radius: 10px;
-  grid-column: 1; /* Roadmap spans column 1 */
-  margin-top: 20px; /* Adjusted for spacing after the header */
-  background-color: white; /* Optional background color */
-  padding: 20px; /* Optional padding for inner content */
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  height: 100%;
+}
+
+#note-editor {
+  width: 100%;
+  height: 70%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  resize: none;
+}
+
+#save-note-button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin-top: 20px;
+}
+
+#save-note-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* Optional: Styling for headings inside columns */
@@ -146,50 +207,149 @@ h3 {
   color: #333;
 }
 
-.box {
-  margin-bottom: 20px;
-}
+/* Responsive Design */
+@media (max-width: 700px) {
+  .lumachat-container {
+    flex-direction: column !important; /* Force columns to stack vertically on small screens */
+    height: auto; /* Allow the container to adjust its height based on content */
+  }
 
-@media (max-width: 700px) { 
-  .column-left {
-      width: 35%; /* Smaller width for left column */
-      background-color: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-  
-    .column-right {
-      width: 40%; /* Larger width for right column */
-      background-color: #e0e0e0;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
+  .column-left, .column-right {
+    width: 100% !important; /* Ensure both columns take up the full width */
+    height: auto; /* Allow the columns to adjust their height based on content */
+    overflow-y: auto; /* Enable vertical scrolling for both columns */
+  }
 
-    .box-luma-conversation {
-      width: 70%;
-    }
+  .box-luma-conversation {
+    width: 100%;
+    height: 300px;
+  }
+
+  .luma-box-chat {
+    height: auto !important; /* Remove fixed height, let it adjust based on content */
+    padding: 10px !important; /* Reduce padding to save space */
+  }
+
+  .column-right {
+  min-height: 500px;
+  }
+
+  .notes-box-chat {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    gap: 10px; /* Optional: Add spacing between stacked items */
+    height: auto; /* Allow height to adjust dynamically */
+  }
+
+  .column-left-notes, .column-right-notes {
+    width: 100%; /* Make each section take up the full width of the container */
+    flex: none; /* Reset flex-grow behavior */
+    margin-bottom: 10px; /* Optional: Add space between sections */
+    min-height: 40vh;
+  }
 }
 
 @media (min-width: 701px) and (max-width: 1024px) {
-  .column-left {
-      width: 35%; /* Smaller width for left column */
-      background-color: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-  
-    .column-right {
-      width: 45%; /* Larger width for right column */
-      background-color: #e0e0e0;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
+  .lumachat-container {
+    flex-direction: row; /* Ensure columns are side by side */
+    height: auto; /* Allow container height to adjust based on content */
+    overflow-y: auto;
+  }
 
-    .box-luma-conversation {
-      width: 80%;
-    }
+  .column-left, .column-right {
+    height: auto; /* Remove fixed height for columns */
+    min-height: 80vh; /* Optional: Add a minimum height to ensure usability */
+    overflow: visible; /* Ensure no scrolling within the columns themselves */
+  }
+
+  .box-luma-conversation {
+    width: 90%;
+    margin-left: 10px;
+  }
+
+  .luma-box-chat-input {
+    width: 80%;
+  }
+
+  .notes-box-chat {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    gap: 10px; /* Optional: Add spacing between stacked items */
+    height: 90vh; /* Allow height to adjust dynamically */
+    flex: 1; /* Make the notes box take the full width of the right column */
+  }
+
+  .column-left-notes, .column-right-notes {
+    width: 100%; /* Make each section take up the full width of the container */
+    flex: none; /* Reset flex-grow behavior */
+    margin-bottom: 10px; /* Optional: Add space between sections */
+    min-height: 40vh; /* Ensure notes sections have a minimum height */
+  }
+
+  /* Ensuring the notes sections inside the box have adequate space */
+  .column-left-notes {
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    height: auto; /* Allow dynamic height based on content */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  }
+
+  .column-right-notes {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    height: auto; /* Allow dynamic height based on content */
+  }
+
+  #note-editor {
+    width: 100%;
+    height: 70%;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+  }
+
+  #notes-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  #notes-list li {
+    margin: 5px 0;
+    cursor: pointer;
+  }
+
+  /* Buttons */
+  #add-note-button, #save-note-button {
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #add-note-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+
+  #add-note-button:hover {
+    background-color: #0056b3;
+  }
+
+  #save-note-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    display: block;
+    margin-top: 20px;
+  }
+
+  #save-note-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
 }
+

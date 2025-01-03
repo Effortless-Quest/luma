@@ -7,6 +7,28 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="./index.css">
 </head>
+<script>
+  function openBrowserView(url) {
+    const browserView = document.getElementById("browser-view");
+    const iframe = document.getElementById("iframe");
+
+    iframe.src = url;
+    browserView.classList.remove("hidden");
+  }
+
+  function closeBrowserView() {
+    const browserView = document.getElementById("browser-view");
+    const iframe = document.getElementById("iframe");
+
+    iframe.src = ""; // Clear the iframe
+    browserView.classList.add("hidden");
+  }
+</script>
+<script>
+  function navigateToPage(url) {
+    window.location.href = url;
+  }
+</script>
 <body class="hand-drawn-text">
   <div class="box header">
     <div class="profile-icon">
@@ -36,8 +58,13 @@
 
   
   <!-- Reminders Section -->
-  <div class="box reminders">
+  <div class="reminders-box-chat">
     <h3>Reminders</h3>
+    <a href="./app/pages/reminders-page/reminders.html">
+      <button class="luma-expand-button">
+        <img src="./public/img/expand.png" alt="Custom Image" />
+      </button>
+    </a>
     <div class="reminder">Reminder 1</div>
     <div class="reminder">Reminder 2</div>
     <div class="reminder">Reminder 3</div>
@@ -45,29 +72,66 @@
     <div class="reminder">Reminder 5</div>
   </div>
 
-    <!-- Chat Section -->
   <div class="luma-box-chat">
-    <!-- Image Button in Top Right Corner -->
-    <a href="./app/pages/chat-page/chat.html">
+     <!-- Image Button in Top Right Corner -->
+     <a href="./app/pages/chat-page/chat.html">
       <button class="luma-expand-button">
         <img src="./public/img/expand.png" alt="Custom Image" />
       </button>
     </a>
-    
     <h3>Chat with Luma</h3>
     <div class="box-luma-conversation"></div>
-    <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
+    
+    <!-- Container for the input box and send button -->
+    <div class="chat-input-container">
+      <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
+      <!-- Send message button as an image -->
+      <button class="send-message-button">
+        <img src="./public/img/sendbutton.png" alt="Send Message" />
+      </button>
+    </div>
   </div>
-
+  
 
   <!-- Directory Section -->
-  <div class="box directory hand-drawn-text">
-    <button>Settings</button>
-    <button>Resources</button>
-    <button>Memories</button>
-    <button>Organize Files</button>
-    <button>My Quest</button>
-    <button>Invention Center</button>
+<div class="directory hand-drawn-text">
+  <button class="directory-settings" onclick="navigateToPage('./app/pages/settings-page/settings.html')">Settings</button>
+  <button class="directory-settings" onclick="navigateToPage('./app/pages/reminders-page/reminders.html')">Memories</button>
+  <button class="directory-settings" onclick="navigateToPage('./app/pages/organizefiles-page/organize.html')">Organize Files</button>
+  <button class="directory-settings" onclick="navigateToPage('./app/pages/chat-page/chat.html')">My Quest</button>
+  <button class="directory-settings" onclick="navigateToPage('./app/pages/inventions-page/inventions.html')">Invention Center</button>  
+  <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/')">
+    <button class="directory-r">
+      <img src="./public/img/elif.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/2/videos')">
+    <button class="directory-resources">
+      <img src="./public/img/easyflowmedia.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.effortlessworks.store/')">
+    <button class="directory-resources">
+      <img src="./public/img/effortlessworks.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.effortless.quest/')">
+    <button class="directory-resources">
+      <img src="./public/img/effortlessquest.png" alt="Custom Image" />
+    </button>
+  </a>
+</div>
+
+<!-- Browser View Section -->
+<div id="browser-view" class="hidden">
+  <button class="back-button" onclick="closeBrowserView()">x</button>
+  <iframe id="iframe" src="" frameborder="0"></iframe>
+</div>
+
+  <div class="box footer">
+
+    
+    
   </div>
 </body>
 </html>
