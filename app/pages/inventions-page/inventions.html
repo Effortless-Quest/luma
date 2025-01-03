@@ -12,26 +12,31 @@
     <img src="../../../public/img/back-arrow.png" alt="Back" />
   </a>
 
-  <div class="inventions-container">
+  <div class="lumachat-container">
     <!-- Left Column -->
     <div class="column-left">
-      <h3>Road Map - Left Section</h3>
       <div class="box">
-        <p>Here you can add some details for the left section of the roadmap, such as milestones, goals, or key events.</p>
-      </div>
-      <div class="box">
-        <p>Additional content for the left column.</p>
+        <!-- Chat Section -->
+        <div class="luma-box-chat">
+          <h3>Chat with Luma</h3>
+          <div class="box-luma-conversation"></div>
+          <!-- Container for the input box and send button -->
+          <div class="chat-input-container">
+            <input class="luma-box-chat-input" type="text" placeholder="Type a message..." />
+            <!-- Send message button as an image -->
+            <button class="send-message-button">
+              <img src="../../../public/img/sendbutton.png" alt="Send Message" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Right Column -->
     <div class="column-right">
-      <h3>Road Map - Right Section</h3>
       <div class="box">
-        <p>Here you can add more detailed information, visualizations, or interactive elements related to the roadmap.</p>
-      </div>
-      <div class="box">
-        <p>Additional content for the right column with more space.</p>
+        <iframe src="https://excalidraw.com/" style="border: none; width: 100%; height: 95vh;"></iframe>
+  </div>
       </div>
     </div>
   </div>
