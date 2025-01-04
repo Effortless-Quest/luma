@@ -224,6 +224,7 @@ h1, h2, h3, h4, h5, h6, p {
     margin-top: 10px;
     border: 2px solid black;
     border-radius: 10px;
+    font-family: 'Virgil', sans-serif;
   }
 
   .chat-input-container {
@@ -311,6 +312,7 @@ h1, h2, h3, h4, h5, h6, p {
     width: 100%;
     height: 30px;
     cursor: pointer;
+    font-family: 'Virgil', sans-serif;
   }
   
   .directory-settings:hover {

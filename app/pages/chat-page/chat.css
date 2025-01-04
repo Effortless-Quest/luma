@@ -12,6 +12,78 @@ body {
   margin: 0;
   padding: 0;
   height: 100%; /* Ensure body takes up full height */
+  font-family: 'Virgil', sans-serif;
+}
+
+@font-face {
+  font-family: 'Virgil';
+  src: url('../../../assets/fonts/Virgil-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hand-drawn-text {
+  font-family: 'Virgil', sans-serif;
+}
+
+/* Apply Inter font to all headings */
+h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Virgil', sans-serif;
+}
+
+
+.texteditor {
+  outline: none;  /* Remove default focus outline */
+  padding: 10px;
+  width: 100%;
+  height: 500px;
+  font-size: 14px;
+  background-color:rgb(255, 255, 255);
+  border: 2px solid black;
+  border-radius: 10px;
+  resize: none; /* Optional: Disable resize */
+  font-family: 'Virgil', sans-serif;
+}
+
+.texteditor:focus {
+  border: 2px solid #007bff; /* Optional: Add custom border on focus */
+}
+.savenote {
+  padding: 10px 20px;
+  background-color:rgb(255, 255, 255);
+  border: 2px solid black;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  font-family: 'Virgil', sans-serif;
+}
+.savenote:hover {
+  background-color:rgb(188, 189, 190);
+}
+
+.opennote {
+  padding: 10px 20px;
+  background-color:rgb(255, 255, 255);
+  border: 2px solid black;
+  border-radius: 10px;
+  color: black;
+  font-family: 'Virgil', sans-serif;
+}
+.opennote:hover {
+  background-color:rgb(188, 189, 190);
+}
+
+.newnote {
+  padding: 10px 20px;
+  background-color:rgb(255, 255, 255);
+  border: 2px solid black;
+  border-radius: 10px;
+  color: black;
+  cursor: pointer;
+  font-family: 'Virgil', sans-serif;
+}
+.newnote:hover {
+  background-color:rgb(188, 189, 190);
 }
 
 /* Back Button Styling */
@@ -65,6 +137,7 @@ body {
 /* Specific for the Chat Box */
 .luma-box-chat {
   margin-top: 20px;
+  font-family: 'Virgil', sans-serif;
   flex-grow: 1; /* Allow it to expand and fill remaining space */
   background-color: white;
   padding: 20px;
@@ -89,6 +162,7 @@ body {
   border: 2px solid black;
   border-radius: 10px;
   margin-left: 10px;
+  font-family: 'Virgil', sans-serif;
 }
 
 .send-message-button {

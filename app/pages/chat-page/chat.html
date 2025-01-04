@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,  initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <title>Road Map</title>
   <link rel="stylesheet" href="./chat.css">
 </head>
@@ -36,79 +36,111 @@
     <div class="column-right">
       <div class="box">
         <div class="notes-box-chat">
-          <!-- Left Column: List of Notes -->
-          <div class="column-left-notes">
-            <h3>Notes List</h3>
-            <ul id="notes-list">
-              <!-- List of notes will appear here -->
-            </ul>
-            <button id="add-note-button">Choose Folder</button>
-            <button id="add-note-button">Add Note</button>
-          </div>
-          
-          <!-- Right Column: Selected Note Editor -->
-          <div class="column-right-notes">
             <h3>Note Editor</h3>
-            <textarea id="note-editor" placeholder="Edit your note here..." disabled></textarea>
-            <button id="save-note-button" disabled>Save Note</button>
-          </div>
+            <textarea id="editor" placeholder="Type your text here..." class="texteditor"></textarea>
+            <button id="newNoteBtn" class="newnote">New Note</button>
+            <button id="openBtn" class="opennote">Open Note</button>
+            <button id="saveBtn" class="savenote">Save</button>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    // JavaScript to handle adding and editing notes
-    let notes = [];
-    let currentNoteIndex = null;
+    const { ipcRenderer } = require('electron');
+    
+    const editor = document.getElementById('editor');
+    const openBtn = document.getElementById('openBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const newNoteBtn = document.getElementById('newNoteBtn');
 
-    // Add a new note
-    document.getElementById("add-note-button").addEventListener("click", function() {
-      const noteContent = prompt("Enter your note:");
+    // Initialize current file path
+    let currentFilePath = null;
 
-      if (noteContent) {
-        notes.push(noteContent);
-        updateNotesList();
-      }
-    });
-
-    // Update the list of notes in the left column
-    function updateNotesList() {
-      const notesList = document.getElementById("notes-list");
-      notesList.innerHTML = ''; // Clear the existing list
-
-      notes.forEach((note, index) => {
-        const li = document.createElement("li");
-        li.textContent = note;
-        li.addEventListener("click", function() {
-          openNoteEditor(index);
-        });
-        notesList.appendChild(li);
+    // Open file dialog to select a file
+    openBtn.addEventListener('click', () => {
+      ipcRenderer.invoke('dialog:open').then(filePath => {
+        if (filePath) {
+          currentFilePath = filePath; // Set current file path to the opened file
+          const fs = require('fs');
+          fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+              alert('Error opening file: ' + err.message);
+            } else {
+              editor.value = data; // Load file content into the editor
+            }
+          });
+        }
+      }).catch(err => {
+        alert('Error: ' + err.message);
       });
-    }
-
-    // Open the note editor with the selected note
-    function openNoteEditor(index) {
-      currentNoteIndex = index;
-      document.getElementById("note-editor").value = notes[index];
-      document.getElementById("note-editor").disabled = false;
-      document.getElementById("save-note-button").disabled = false;
-    }
-
-    // Save the edited note
-    document.getElementById("save-note-button").addEventListener("click", function() {
-      if (currentNoteIndex !== null) {
-        const editedContent = document.getElementById("note-editor").value;
-        notes[currentNoteIndex] = editedContent;
-        updateNotesList();
-        document.getElementById("note-editor").disabled = true;
-        document.getElementById("save-note-button").disabled = true;
-      }
     });
 
-    // Initialize the notes list when the page loads
-    updateNotesList();
+    // Save edited content back to the file
+    saveBtn.addEventListener('click', () => {
+      ipcRenderer.invoke('dialog:save', currentFilePath).then(filePath => {
+        if (filePath) {
+          currentFilePath = filePath; // Update the current file path with the new location
+          const fs = require('fs');
+          
+          // Save the file content
+          fs.writeFile(filePath, editor.value, (err) => {
+            if (err) {
+              alert('Error saving file: ' + err.message);
+            } else {
+              alert('File saved successfully!');
+              
+              // Clear the editor content after saving
+              editor.value = '';
+              
+              // Reset the current file path as we are now working with a new file
+              currentFilePath = null;
+
+              // Simulate clicking out and back in (blur and focus)
+              editor.blur(); // First blur the editor
+              setTimeout(() => {
+                editor.focus(); // Then focus back on the editor
+                editor.setSelectionRange(0, 0); // Set the cursor at the start
+              }, 50); // Slight delay for the blur/focus events to take effect
+            }
+          });
+        }
+      }).catch(err => {
+        alert('Error: ' + err.message);
+      });
+    });
+
+    // Create a new note, save it, and open it in the editor
+    newNoteBtn.addEventListener('click', () => {
+      ipcRenderer.invoke('dialog:save', currentFilePath).then(filePath => {
+        if (filePath) {
+          currentFilePath = filePath; // Set current file path for the new file
+          const fs = require('fs');
+          
+          // Create a new file and immediately open it in the editor
+          fs.writeFile(filePath, '', (err) => {
+            if (err) {
+              alert('Error creating new file: ' + err.message);
+            } else {
+              editor.value = ''; // Clear editor for the new note
+              editor.focus(); // Focus on the editor immediately
+              alert('New file created successfully!');
+              
+              // Directly read the newly created file into the editor without opening another dialog
+              fs.readFile(filePath, 'utf8', (err, data) => {
+                if (err) {
+                  alert('Error opening the new file: ' + err.message);
+                } else {
+                  editor.value = data; // Load the newly created file into the editor
+                }
+              });
+            }
+          });
+        }
+      }).catch(err => {
+        alert('Error: ' + err.message);
+      });
+    });
   </script>
 </body>
 </html>
-

@@ -1,85 +1,123 @@
-/* Back Button Styling */
-.back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000; /* Ensure it's above other elements */
-    cursor: pointer;
-  }
-  
-  .back-button img {
-    width: 35px; /* Adjust based on your image size */
-    height: auto;
-  }
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* Ensure the body takes up full height */
+  margin: 0; /* Remove default margin */
+}
 
-/* Container styles for the columns */
-.reminders-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    height: 85vh;
-  }
+.lumachat-container {
+  display: flex;
+  width: 100%;
+  height: 100%; /* Ensure the container takes full height */
+}
 
-  .column-left {
-    width: 35%; /* Smaller width for left column */
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 8px;
-    height: 100%;
-    margin-top: 20px;
-  }
+.column-left {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}
 
-  .column-right {
-    width: 55%; /* Larger width for right column */
-    background-color: #e0e0e0;
-    padding: 20px;
-    border-radius: 8px;
-    height: 100%;
-    margin-top: 20px;
-  }
+.column-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%; /* Ensure right column takes up full height */
+}
 
-  /* Optional: Styling for headings inside columns */
-  h3 {
-    font-size: 1.5rem;
-    color: #333;
-  }
+.notes-box-chat {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Allow the container to take up available space */
+}
 
-  .box {
-    margin-bottom: 20px;
-  }
+.texteditor {
+  width: 100%;
+  height: 500px; /* Set a specific height for the text editor */
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  resize: vertical; /* Allow the user to resize vertically */
+  overflow: auto; /* Allow scrolling if content overflows */
+  box-sizing: border-box; /* Ensure padding doesn't affect overall size */
+}
 
-  @media (max-width: 700px) { 
-    .column-left {
-        width: 35%; /* Smaller width for left column */
-        background-color: #f4f4f4;
-        padding: 20px;
-        border-radius: 8px;
-        height: 100%;
-      }
-    
-      .column-right {
-        width: 40%; /* Larger width for right column */
-        background-color: #e0e0e0;
-        padding: 20px;
-        border-radius: 8px;
-        height: 100%;
-      }
-  }
+.newnote, .savenote {
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
 
-  @media (min-width: 701px) and (max-width: 1024px) {
-    .column-left {
-        width: 35%; /* Smaller width for left column */
-        background-color: #f4f4f4;
-        padding: 20px;
-        border-radius: 8px;
-        height: 100%;
-      }
-    
-      .column-right {
-        width: 45%; /* Larger width for right column */
-        background-color: #e0e0e0;
-        padding: 20px;
-        border-radius: 8px;
-        height: 100%;
-      }
-  }
+#fileExplorer {
+  font-family: Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+.file {
+  padding: 5px;
+  background-color: #d1e7ff;
+  margin: 2px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.file:hover {
+  background-color: #a7c6ff;
+}
+
+.folder {
+  padding: 5px;
+  background-color: #e7f0d1;
+  margin: 2px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.folder:hover {
+  background-color: #d0e0b2;
+}
+
+.folder, .file {
+  display: flex;
+  align-items: center;
+}
+
+.folder .folder-icon, .file .file-icon {
+  margin-right: 8px;
+}
+
+#chooseFolderBtn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#chooseFolderBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Dropdown styling for folder contents */
+.folder-contents {
+  display: none;
+  margin-left: 20px; /* Indent the files under the folder */
+}
+
+.folder.open .folder-contents {
+  display: block; /* Show contents when folder is open */
+}
+
+#fileExplorer > div {
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+#fileExplorer > div:last-child {
+  margin-bottom: 0;
+}

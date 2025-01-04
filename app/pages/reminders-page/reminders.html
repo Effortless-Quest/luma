@@ -2,38 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,  initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Road Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Obsidian-like Editor</title>
   <link rel="stylesheet" href="./reminders.css">
 </head>
 <body>
-  <!-- Back Button (Image) -->
-  <a href="javascript:history.back()" class="back-button">
-    <img src="../../../public/img/back-arrow.png" alt="Back" />
-  </a>
-
-  <div class="reminders-container">
-    <!-- Left Column -->
+  <div class="lumachat-container">
+    <!-- Left Column (File Explorer) -->
     <div class="column-left">
-      <h3>Road Map - Left Section</h3>
       <div class="box">
-        <p>Here you can add some details for the left section of the roadmap, such as milestones, goals, or key events.</p>
-      </div>
-      <div class="box">
-        <p>Additional content for the left column.</p>
+        <!-- File and Folder Explorer -->
+        <div id="fileExplorer" style="height: 500px; overflow-y: auto;"></div>
+        <button id="chooseFolderBtn">Choose Folder</button> <!-- Choose Folder Button -->
       </div>
     </div>
 
-    <!-- Right Column -->
+    <!-- Right Column (Note Editor) -->
     <div class="column-right">
-      <h3>Road Map - Right Section</h3>
       <div class="box">
-        <p>Here you can add more detailed information, visualizations, or interactive elements related to the roadmap.</p>
-      </div>
-      <div class="box">
-        <p>Additional content for the right column with more space.</p>
+        <div class="notes-box-chat">
+          <h3>Note Editor</h3>
+          <textarea id="editor" placeholder="Select a file to edit..." class="texteditor" readonly></textarea>
+          <button id="newNoteBtn" class="newnote">New Note</button>
+          <button id="saveBtn" class="savenote">Save</button>
+        </div>
       </div>
     </div>
   </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const fs = require('fs');
+    const path = require('path');
+    
+    const editor = document.getElementById('editor');
+    const saveBtn = document.getElementById('saveBtn');
+    const newNoteBtn = document.getElementById('newNoteBtn');
+    const fileExplorer = document.getElementById('fileExplorer');
+    const chooseFolderBtn = document.getElementById('chooseFolderBtn');
+    
+    let currentFilePath = null;
+    let currentDirectory = './'; // Start in the current folder
+    
+    // Load files and folders in the current directory
+    function loadDirectory(directoryPath) {
+      fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
+        if (err) {
+          alert('Error reading directory: ' + err.message);
+          return;
+        }
+
+        fileExplorer.innerHTML = ''; // Clear the previous directory view
+        
+        // Create a breadcrumb for the current directory path
+        const folderBreadcrumb = document.createElement('div');
+        folderBreadcrumb.textContent = `Folder: ${directoryPath}`;
+        fileExplorer.appendChild(folderBreadcrumb);
+
+        // Display folders and files in the directory
+        files.forEach(file => {
+          const filePath = path.join(directoryPath, file.name);
+          const fileElement = document.createElement('div');
+          const fileText = document.createElement('span');
+          fileText.textContent = file.name;
+
+          // Style for clickable file/folder elements
+          fileElement.style.cursor = 'pointer';
+          fileElement.classList.add(file.isDirectory() ? 'folder' : 'file');
+          fileElement.appendChild(fileText);
+
+          // Event listener for clicking files
+          fileElement.addEventListener('click', () => {
+            if (file.isDirectory()) {
+              // If folder clicked, load its contents
+              loadDirectory(filePath);
+            } else {
+              // If file clicked, load the file into the editor
+              loadFile(filePath);
+            }
+          });
+
+          fileExplorer.appendChild(fileElement);
+        });
+      });
+    }
+
+    // Load a file into the editor
+    function loadFile(filePath) {
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          alert('Error opening file: ' + err.message);
+        } else {
+          editor.value = data;
+          currentFilePath = filePath;
+        }
+      });
+    }
+
+    // Save the content of the editor to the current file
+    saveBtn.addEventListener('click', () => {
+      if (currentFilePath) {
+        fs.writeFile(currentFilePath, editor.value, (err) => {
+          if (err) {
+            alert('Error saving file: ' + err.message);
+          } else {
+            alert('File saved successfully!');
+          }
+        });
+      } else {
+        alert('No file is currently open.');
+      }
+    });
+
+    // Create a new note
+    newNoteBtn.addEventListener('click', () => {
+      const newFilePath = path.join(currentDirectory, 'new-note.md');
+      fs.writeFile(newFilePath, '', (err) => {
+        if (err) {
+          alert('Error creating new file: ' + err.message);
+        } else {
+          loadFile(newFilePath); // Load the new file into the editor
+        }
+      });
+    });
+
+    // Choose folder button
+    chooseFolderBtn.addEventListener('click', () => {
+      ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
+        if (folderPath) {
+          currentDirectory = folderPath; // Update the current directory
+          loadDirectory(currentDirectory); // Load the selected directory
+        }
+      }).catch((err) => {
+        alert('Error selecting folder: ' + err.message);
+      });
+    });
+
+    // Initialize the directory view when the page loads
+    loadDirectory(currentDirectory);
+  </script>
 </body>
 </html>
