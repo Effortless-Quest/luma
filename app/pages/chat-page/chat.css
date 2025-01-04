@@ -15,6 +15,16 @@ body {
   font-family: 'Virgil', sans-serif;
 }
 
+/* Style for folder breadcrumb */
+.folder-breadcrumb {
+  font-size: 10px; /* Default font size, can be adjusted */
+  color: #333;  /* You can change the color as well */
+  margin-bottom: 10px; /* Adds spacing below the breadcrumb */
+  white-space: nowrap; /* Prevents the text from breaking onto multiple lines */
+  overflow: hidden;  /* Hides any overflow */
+  text-overflow: ellipsis; /* Adds ellipsis if text overflows */
+}
+
 @font-face {
   font-family: 'Virgil';
   src: url('../../../assets/fonts/Virgil-Regular.woff2') format('woff2');
@@ -47,43 +57,6 @@ h1, h2, h3, h4, h5, h6, p {
 
 .texteditor:focus {
   border: 2px solid #007bff; /* Optional: Add custom border on focus */
-}
-.savenote {
-  padding: 10px 20px;
-  background-color:rgb(255, 255, 255);
-  border: 2px solid black;
-  border-radius: 10px;
-  color: black;
-  cursor: pointer;
-  font-family: 'Virgil', sans-serif;
-}
-.savenote:hover {
-  background-color:rgb(188, 189, 190);
-}
-
-.opennote {
-  padding: 10px 20px;
-  background-color:rgb(255, 255, 255);
-  border: 2px solid black;
-  border-radius: 10px;
-  color: black;
-  font-family: 'Virgil', sans-serif;
-}
-.opennote:hover {
-  background-color:rgb(188, 189, 190);
-}
-
-.newnote {
-  padding: 10px 20px;
-  background-color:rgb(255, 255, 255);
-  border: 2px solid black;
-  border-radius: 10px;
-  color: black;
-  cursor: pointer;
-  font-family: 'Virgil', sans-serif;
-}
-.newnote:hover {
-  background-color:rgb(188, 189, 190);
 }
 
 /* Back Button Styling */
@@ -125,7 +98,16 @@ h1, h2, h3, h4, h5, h6, p {
   padding: 20px;
   border-radius: 8px;
   height: 100%; /* Take up full height of parent container */
-  overflow: hidden; /* Prevent any overflow issues */
+  overflow-y: auto; /* Prevent any overflow issues */
+}
+
+.column-middle {
+  display: flex; /* Use flexbox for layout inside */
+  padding: 20px;
+  flex-direction: column;
+  background-color:rgba(244, 244, 244, 0); /* Example background color */
+  height: 600px;
+  max-width: 50vh;
 }
 
 .column-right {
@@ -258,27 +240,136 @@ h1, h2, h3, h4, h5, h6, p {
   resize: none;
 }
 
-#save-note-button {
-  margin-top: 10px;
-  padding: 8px 12px;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: block;
-  margin-top: 20px;
-}
-
-#save-note-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
 
 /* Optional: Styling for headings inside columns */
 h3 {
   font-size: 1.5rem;
   color: #333;
+}
+
+
+.texteditor {
+  width: 100%;
+  height: 500px; /* Set a specific height for the text editor */
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  resize: vertical; /* Allow the user to resize vertically */
+  overflow: auto; /* Allow scrolling if content overflows */
+  box-sizing: border-box; /* Ensure padding doesn't affect overall size */
+}
+
+.newnote, .savenote {
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#fileExplorer {
+  font-family: Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+.file {
+  padding: 5px;
+  background-color: #d1e7ff;
+  margin: 2px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 50vh;
+}
+
+.file:hover {
+  background-color: #a7c6ff;
+}
+
+.folder {
+  padding: 5px;
+  background-color: #e7f0d1;
+  margin: 2px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 50vh;
+}
+
+.folder:hover {
+  background-color: #d0e0b2;
+}
+
+.folder, .file {
+  display: flex;
+  align-items: center;
+}
+
+.folder .folder-icon, .file .file-icon {
+  margin-right: 8px;
+}
+
+#chooseFolderBtn {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#chooseFolderBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Dropdown styling for folder contents */
+.folder-contents {
+  display: none;
+  margin-left: 20px; /* Indent the files under the folder */
+}
+
+.folder.open .folder-contents {
+  display: block; /* Show contents when folder is open */
+}
+
+#fileExplorer > div {
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+#fileExplorer > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Context Menu Styles */
+#contextMenu {
+  display: none; /* Initially hidden */
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 5px;
+  width: 150px;
+  padding: 5px 0;
+}
+
+#contextMenu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#contextMenu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#contextMenu li:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+#contextMenu li:active {
+  background-color: #ddd;
 }
 
 
@@ -290,7 +381,7 @@ h3 {
     height: auto; /* Allow the container to adjust its height based on content */
   }
 
-  .column-left, .column-right {
+  .column-left, .column-middle, .column-right {
     width: 100% !important; /* Ensure both columns take up the full width */
     height: auto; /* Allow the columns to adjust their height based on content */
     overflow-y: auto; /* Enable vertical scrolling for both columns */
@@ -332,10 +423,11 @@ h3 {
     overflow-y: auto;
   }
 
-  .column-left, .column-right {
+  .column-left, .column-middle, .column-right {
     height: auto; /* Remove fixed height for columns */
-    min-height: 80vh; /* Optional: Add a minimum height to ensure usability */
+    min-height: 100vh; /* Optional: Add a minimum height to ensure usability */
     overflow: visible; /* Ensure no scrolling within the columns themselves */
+    min-width: 50vh;
   }
 
   .box-luma-conversation {

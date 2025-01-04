@@ -12,12 +12,27 @@ body {
   height: 100%; /* Ensure the container takes full height */
 }
 
+/* Back Button Styling */
+.back-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1000; /* Ensure it's above other elements */
+  cursor: pointer;
+}
+
+.back-button img {
+  width: 35px; /* Adjust based on your image size */
+  height: auto;
+}
+
 .column-left {
   width: 250px;
   background-color: #f4f4f4;
   padding: 10px;
   border-right: 1px solid #ddd;
   overflow-y: auto;
+  margin-top: 50px;
 }
 
 .column-right {
@@ -25,6 +40,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 10px;
+  margin-top: 50px;
   height: 100%; /* Ensure right column takes up full height */
 }
 
@@ -120,4 +136,38 @@ body {
 
 #fileExplorer > div:last-child {
   margin-bottom: 0;
+}
+
+/* Context Menu Styles */
+#contextMenu {
+  display: none; /* Initially hidden */
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 5px;
+  width: 150px;
+  padding: 5px 0;
+}
+
+#contextMenu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#contextMenu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#contextMenu li:hover {
+  background-color: #f0f0f0;
+  color: #007bff;
+}
+
+#contextMenu li:active {
+  background-color: #ddd;
 }

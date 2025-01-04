@@ -32,113 +32,322 @@
       </div>
     </div>
 
+    <!-- Middle Column -->
+    <div class="column-middle">
+      <div class="box">
+        <div class="notes-box-chat">
+        <!-- File and Folder Explorer -->
+        <div id="fileExplorer" style="height: 500px; overflow-y: auto;">
+          <div>Please choose a folder to start.</div> <!-- Initial state -->
+        </div>
+        <button id="chooseFolderBtn">Choose Folder</button> <!-- Choose Folder Button -->
+        <button id="newNoteBtn" class="newnote" disabled>New Note</button> <!-- New Note Button -->
+        </div>
+      </div>
+    </div>
+
     <!-- Right Column -->
     <div class="column-right">
       <div class="box">
         <div class="notes-box-chat">
-            <h3>Note Editor</h3>
-            <textarea id="editor" placeholder="Type your text here..." class="texteditor"></textarea>
-            <button id="newNoteBtn" class="newnote">New Note</button>
-            <button id="openBtn" class="opennote">Open Note</button>
-            <button id="saveBtn" class="savenote">Save</button>
+          <h3>Note Editor</h3>
+          <textarea id="editor" placeholder="Select a file to edit..." class="texteditor" readonly></textarea>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Custom Context Menu -->
+  <div id="contextMenu" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1000;">
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+      <li id="openFile">Open</li>
+      <li id="renameFile">Rename</li>
+      <li id="deleteFile">Delete</li>
+    </ul>
+  </div>
+
   <script>
     const { ipcRenderer } = require('electron');
+    const fs = require('fs');
+    const path = require('path');
     
     const editor = document.getElementById('editor');
-    const openBtn = document.getElementById('openBtn');
-    const saveBtn = document.getElementById('saveBtn');
     const newNoteBtn = document.getElementById('newNoteBtn');
-
-    // Initialize current file path
+    const fileExplorer = document.getElementById('fileExplorer');
+    const chooseFolderBtn = document.getElementById('chooseFolderBtn');
+    const contextMenu = document.getElementById('contextMenu');
+    
     let currentFilePath = null;
-
-    // Open file dialog to select a file
-    openBtn.addEventListener('click', () => {
-      ipcRenderer.invoke('dialog:open').then(filePath => {
-        if (filePath) {
-          currentFilePath = filePath; // Set current file path to the opened file
-          const fs = require('fs');
-          fs.readFile(filePath, 'utf8', (err, data) => {
-            if (err) {
-              alert('Error opening file: ' + err.message);
-            } else {
-              editor.value = data; // Load file content into the editor
+    let currentDirectory = null; // Start with no folder selected
+    let selectedFileElement = null; // To store the right-clicked file element
+    let autoSaveTimeout = null;  // Variable to store the timeout ID for autosave
+  
+    // Disable editor and buttons until a folder is chosen
+    editor.readOnly = true;
+    newNoteBtn.disabled = true;
+  
+    // Function to trigger autosave
+    function autosave() {
+      if (currentFilePath && editor.value) {
+        fs.writeFile(currentFilePath, editor.value, (err) => {
+          if (err) {
+            console.error('Error autosaving file: ' + err.message);
+          } else {
+            console.log('File autosaved');
+          }
+        });
+      }
+    }
+  
+    // Function to reset autosave timer
+    function resetAutosave() {
+      if (autoSaveTimeout) {
+        clearTimeout(autoSaveTimeout);  // Clear existing timeout
+      }
+      autoSaveTimeout = setTimeout(autosave, 2000);  // Autosave every 2 seconds
+    }
+  
+    // Listen for editor content change to reset the autosave timer
+    editor.addEventListener('input', resetAutosave);
+  
+    // Navigate back to the parent directory
+    function navigateBack() {
+      if (!currentDirectory) {
+        alert('No folder selected. Please choose a folder first.');
+        return;
+      }
+  
+      const parentDirectory = path.dirname(currentDirectory);
+      if (parentDirectory !== currentDirectory) {
+        currentDirectory = parentDirectory; // Update current directory
+        loadDirectory(currentDirectory); // Load parent directory
+      } else {
+        alert('You are already at the root directory.');
+      }
+    }
+  
+    // Load files and folders in the current directory
+    function loadDirectory(directoryPath) {
+      if (!directoryPath) {
+        alert('No folder selected. Please choose a folder first.');
+        return;
+      }
+  
+      // Update the current directory to the one being viewed
+      currentDirectory = directoryPath;
+  
+      fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
+        if (err) {
+          alert('Error reading directory: ' + err.message);
+          return;
+        }
+  
+        fileExplorer.innerHTML = ''; // Clear the previous directory view
+  
+        // Add back button
+        const backButton = document.createElement('button');
+        backButton.textContent = 'Back';
+        backButton.style.marginBottom = '10px';
+        backButton.addEventListener('click', navigateBack);
+        fileExplorer.appendChild(backButton);
+  
+        // Create a breadcrumb for the current directory path
+        const folderBreadcrumb = document.createElement('div');
+        folderBreadcrumb.textContent = `Folder: ${directoryPath}`;
+        folderBreadcrumb.classList.add('folder-breadcrumb');  // Add this class for styling
+        fileExplorer.appendChild(folderBreadcrumb);
+  
+        // Display folders and files in the directory
+        files.forEach(file => {
+          const filePath = path.join(directoryPath, file.name);
+          const fileElement = document.createElement('div');
+          const fileText = document.createElement('span');
+          fileText.textContent = file.name;
+  
+          // Style for clickable file/folder elements
+          fileElement.style.cursor = 'pointer';
+          fileElement.classList.add(file.isDirectory() ? 'folder' : 'file');
+          fileElement.appendChild(fileText);
+  
+          // Right-click event listener for context menu
+          fileElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            selectedFileElement = fileElement; // Store the right-clicked file element
+            showContextMenu(e.clientX, e.clientY, filePath, fileElement);
+          });
+  
+          // Event listener for double-click to rename the file
+          fileElement.addEventListener('dblclick', () => {
+            if (!file.isDirectory()) {
+              // If file is clicked, initiate renaming
+              renameFile(filePath, fileElement);
             }
           });
-        }
-      }).catch(err => {
-        alert('Error: ' + err.message);
-      });
-    });
-
-    // Save edited content back to the file
-    saveBtn.addEventListener('click', () => {
-      ipcRenderer.invoke('dialog:save', currentFilePath).then(filePath => {
-        if (filePath) {
-          currentFilePath = filePath; // Update the current file path with the new location
-          const fs = require('fs');
-          
-          // Save the file content
-          fs.writeFile(filePath, editor.value, (err) => {
-            if (err) {
-              alert('Error saving file: ' + err.message);
+  
+          // Event listener for clicking files to load them into the editor
+          fileElement.addEventListener('click', () => {
+            if (file.isDirectory()) {
+              loadDirectory(filePath); // Load folder contents
             } else {
-              alert('File saved successfully!');
-              
-              // Clear the editor content after saving
-              editor.value = '';
-              
-              // Reset the current file path as we are now working with a new file
-              currentFilePath = null;
-
-              // Simulate clicking out and back in (blur and focus)
-              editor.blur(); // First blur the editor
-              setTimeout(() => {
-                editor.focus(); // Then focus back on the editor
-                editor.setSelectionRange(0, 0); // Set the cursor at the start
-              }, 50); // Slight delay for the blur/focus events to take effect
+              loadFile(filePath); // Load file into editor
             }
           });
-        }
-      }).catch(err => {
-        alert('Error: ' + err.message);
+  
+          fileExplorer.appendChild(fileElement);
+        });
+  
+        // Enable buttons once a folder is loaded
+        editor.readOnly = false;
+        newNoteBtn.disabled = false;
       });
-    });
-
-    // Create a new note, save it, and open it in the editor
+    }
+  
+    // Load a file into the editor
+    function loadFile(filePath) {
+      if (!filePath) return;
+  
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          alert('Error opening file: ' + err.message);
+        } else {
+          editor.value = data;
+          currentFilePath = filePath;
+          editor.readOnly = false; // Enable editing after loading a file
+          resetAutosave();  // Reset autosave timer when a file is loaded
+        }
+      });
+    }
+  
+    // Create a new note
     newNoteBtn.addEventListener('click', () => {
-      ipcRenderer.invoke('dialog:save', currentFilePath).then(filePath => {
-        if (filePath) {
-          currentFilePath = filePath; // Set current file path for the new file
-          const fs = require('fs');
-          
-          // Create a new file and immediately open it in the editor
-          fs.writeFile(filePath, '', (err) => {
+      if (!currentDirectory) {
+        alert('No folder selected. Please choose a folder first.');
+        return;
+      }
+  
+      const newFileName = `new-note-${Date.now()}.md`; // Unique file name
+      const newFilePath = path.join(currentDirectory, newFileName); // Save to current directory
+  
+      fs.writeFile(newFilePath, '', (err) => {
+        if (err) {
+          alert('Error creating new file: ' + err.message);
+        } else {
+          loadDirectory(currentDirectory); // Reload the directory to show the new file
+          loadFile(newFilePath); // Open the new file in the editor
+        }
+      });
+    });
+  
+    // Show the custom context menu
+    function showContextMenu(x, y, filePath, fileElement) {
+      contextMenu.style.display = 'block';
+      contextMenu.style.left = `${x}px`;
+      contextMenu.style.top = `${y}px`;
+  
+      // Add actions to context menu items
+      document.getElementById('openFile').onclick = () => {
+        loadFile(filePath);
+        contextMenu.style.display = 'none';
+      };
+  
+      document.getElementById('renameFile').onclick = () => {
+        renameFile(filePath, fileElement);
+        contextMenu.style.display = 'none';
+      };
+  
+      document.getElementById('deleteFile').onclick = () => {
+        deleteFile(filePath, fileElement);
+        contextMenu.style.display = 'none';
+      };
+    }
+  
+    // Hide the context menu when clicking elsewhere
+    window.addEventListener('click', () => {
+      contextMenu.style.display = 'none';
+    });
+  
+    // Rename a file
+    function renameFile(filePath, fileElement) {
+      const fileName = path.basename(filePath);
+      const newNameInput = document.createElement('input');
+      newNameInput.value = fileName;
+      
+      // Listen for Enter key to save the new name
+      newNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          saveNewFileName(newNameInput.value, filePath, fileElement);
+        }
+      });
+  
+      // Listen for blur (when the user clicks outside the input field)
+      newNameInput.addEventListener('blur', () => {
+        saveNewFileName(newNameInput.value, filePath, fileElement);
+      });
+  
+      fileElement.innerHTML = ''; // Clear the current file name
+      fileElement.appendChild(newNameInput);
+      newNameInput.focus();
+    }
+  
+    // Save the new file name and replace the editor input
+    function saveNewFileName(newFileName, oldFilePath, fileElement) {
+      const newFilePath = path.join(path.dirname(oldFilePath), newFileName.trim());
+  
+      // Check if the new file name is different and is not empty
+      if (newFileName.trim() && newFileName !== path.basename(oldFilePath)) {
+        // Check if the old file exists before renaming
+        fs.access(oldFilePath, fs.constants.F_OK, (err) => {
+          if (err) {
+            // If the file doesn't exist, ignore the error and return
+            console.log(`File does not exist: ${oldFilePath}`);
+            return;
+          }
+  
+          // Proceed with renaming
+          fs.rename(oldFilePath, newFilePath, (err) => {
             if (err) {
-              alert('Error creating new file: ' + err.message);
+              alert('Error renaming file: ' + err.message);
             } else {
-              editor.value = ''; // Clear editor for the new note
-              editor.focus(); // Focus on the editor immediately
-              alert('New file created successfully!');
-              
-              // Directly read the newly created file into the editor without opening another dialog
-              fs.readFile(filePath, 'utf8', (err, data) => {
-                if (err) {
-                  alert('Error opening the new file: ' + err.message);
-                } else {
-                  editor.value = data; // Load the newly created file into the editor
-                }
-              });
+              const newFileText = document.createElement('span');
+              newFileText.textContent = newFileName;
+              fileElement.innerHTML = ''; // Clear input
+              fileElement.appendChild(newFileText); // Show new file name
+              loadDirectory(currentDirectory); // Reload the directory to show the new file name
             }
           });
+        });
+      } else {
+        const originalFileText = document.createElement('span');
+        originalFileText.textContent = path.basename(oldFilePath);
+        fileElement.innerHTML = ''; // Clear input
+        fileElement.appendChild(originalFileText); // Show original name
+      }
+    }
+  
+    // Delete a file
+    function deleteFile(filePath, fileElement) {
+      if (confirm('Are you sure you want to delete this file?')) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            alert('Error deleting file: ' + err.message);
+          } else {
+            alert('File deleted successfully!');
+            fileElement.remove(); // Remove the file element from the view
+            loadDirectory(currentDirectory); // Reload the directory
+          }
+        });
+      }
+    }
+  
+    // Choose folder button
+    chooseFolderBtn.addEventListener('click', () => {
+      ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
+        if (folderPath) {
+          currentDirectory = folderPath; // Update the current directory
+          loadDirectory(currentDirectory); // Load the selected directory
         }
-      }).catch(err => {
-        alert('Error: ' + err.message);
+      }).catch((err) => {
+        alert('Error selecting folder: ' + err.message);
       });
     });
   </script>
