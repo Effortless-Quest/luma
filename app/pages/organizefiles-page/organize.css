@@ -1,11 +1,102 @@
-body {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  overflow-y: hidden; /* Optional: Disable vertical scrolling if needed */
-  white-space: nowrap; /* Prevent content from wrapping, enabling scrolling */
-  margin: 0; /* Avoid unwanted gaps */
-  padding: 0;
+/* Text Editor */
+.texteditor {
+  outline: none;
+  padding: 10px;
+  width: 100%;
+  height: 500px;
+  font-size: 14px;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid black;
+  border-radius: 10px;
+  resize: none;
 }
 
+.texteditor:focus {
+  border-color: #007bff;
+}
+
+/* URL Bar */
+.url-bar {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.url-input {
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.go-button {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.go-button:hover {
+  background-color: #45a049;
+}
+
+
+/* Chat Box */
+.luma-box-chat {
+  margin-top: -20px;
+  font-family: 'Virgil', sans-serif;
+  flex-grow: 1;
+  background-color: white;
+  padding: 20px;
+  border: 2px solid black;
+  border-radius: 10px;
+  height: 85vh;
+  position: relative;
+  overflow-y: auto;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.luma-box-chat-input {
+  width: 85%;
+  padding: 10px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+.send-message-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
+  width: 10%;
+}
+
+.send-message-button img {
+  width: 40px;
+}
+
+.box-luma-conversation {
+  position: relative;
+  width: 90%;
+  height: 60vh;
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+}
+ 
 /* Back Button Styling */
 .back-button {
   position: absolute;
@@ -21,7 +112,7 @@ body {
 }
 
 /* Container styles for the columns */
-.organize-container {
+.settings-container {
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -30,114 +121,21 @@ body {
 
 .column-left {
   width: 35%; /* Smaller width for left column */
-  background-color: #f4f4f4;
+  background-color:rgba(244, 244, 244, 0);
   padding: 20px;
   border-radius: 8px;
   height: 100%;
   margin-top: 20px;
 }
-
-.column-left-notes {
-  width: 25%; /* Smaller width for left column */
-  background-color: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
-  height: 630px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.luma-box-chat {
-  
-  height: 700px;
-  background-color: white;
-  padding: 20px;
-  border: 2px solid black;
-  border-radius: 10px;
-  position: relative; /* Add relative positioning here */
-}
-
-.notes-box-chat {
-  display: flex; /* This ensures the columns are displayed side by side */
-  gap: 20px; /* Optional: Adds space between the columns */
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
-  height: 100%; /* Ensure it stretches to fill the container */
-  position: relative;
-}
-
-.luma-box-chat-input {
-  width: 85%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 2px solid black;
-  border-radius: 10px;
-}
-
-.luma-expand-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 50px; /* Adjust the size of the button */
-  height: 50px; /* Adjust the size of the button */
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.luma-expand-button img {
-  width: 30px;
-  height: 30px;
-  object-fit: cover;
-  border-radius: 5px; /* Optional: for rounded corners */
-}
-
-.box-luma-conversation {    
-  position: relative;
-  /* Optional: You can define a fixed size for the roadmap container */
-  width: 88%; /* or a fixed size, e.g., 600px */
-  height: 520px; /* or adjust as needed */
-  border: 2px solid black;
-  border-radius: 10px;
-  grid-column: 1; /* Roadmap spans column 1 */
-  margin-top: 20px; /* Adjusted for spacing after the header */
-  background-color: white; /* Optional background color */
-  padding: 20px; /* Optional padding for inner content */
-}
-
 
 .column-right {
   width: 55%; /* Larger width for right column */
-  background-color: #e0e0e0;
+  background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  height: 100%;
-  margin-top: 20px;
-}
-
-.column-right-notes {
-  width: 65%; /* Larger width for right column */
-  background-color: #e0e0e0;
-  padding: 20px;
-  border-radius: 8px;
-  height: 630px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.box-notes {    
-  position: relative;
-  /* Optional: You can define a fixed size for the roadmap container */
-  width: 94%; /* or a fixed size, e.g., 600px */
-  height: 620px; /* or adjust as needed */
   border: 2px solid black;
   border-radius: 10px;
-  grid-column: 1; /* Roadmap spans column 1 */
-  margin-top: 20px; /* Adjusted for spacing after the header */
-  background-color: white; /* Optional background color */
-  padding: 20px; /* Optional padding for inner content */
+  height: 85vh;
+  margin-top: 20px;
 }
 
 /* Optional: Styling for headings inside columns */
@@ -148,6 +146,79 @@ h3 {
 
 .box {
   margin-bottom: 20px;
+}
+
+/* Tab container styles */
+.tab-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+}
+
+.tab {
+  position: relative;
+  padding: 10px 30px 10px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+}
+
+.tab.active {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.tab .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #999;
+}
+
+.tab-content {
+  flex: 1;
+  display: none;
+  padding: 0;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0 5px 5px 5px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.add-tab-btn {
+  padding: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.add-tab-btn:hover {
+  background-color: #45a049;
 }
 
 @media (max-width: 700px) { 
@@ -166,12 +237,38 @@ h3 {
       border-radius: 8px;
       height: 100%;
     }
-
-    .box-luma-conversation {
-      width: 70%;
+    .lumachat-container {
+      flex-direction: column;
+      height: auto;
     }
-}
-
+  
+    .column-left, .column-middle, .column-right {
+      width: 100%;
+      height: auto;
+    }
+  
+    .box-luma-conversation {
+      width: 100%;
+      height: 300px;
+    }
+  
+    .luma-box-chat {
+      height: auto;
+      padding: 10px;
+    }
+  
+    .notes-box-chat {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: auto;
+    }
+  
+    .column-left-notes, .column-right-notes {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
 @media (min-width: 701px) and (max-width: 1024px) {
   .column-left {
       width: 35%; /* Smaller width for left column */
@@ -189,7 +286,29 @@ h3 {
       height: 100%;
     }
 
-    .box-luma-conversation {
-      width: 80%;
-    }
+  .lumachat-container {
+    flex-direction: row;
+  }
+
+  .column-left, .column-middle, .column-right {
+    height: auto;
+    min-width: 50vh;
+  }
+
+  .box-luma-conversation {
+    width: 90%;
+    margin-left: 10px;
+  }
+
+  .luma-box-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 90vh;
+  }
+
+  .column-left-notes, .column-right-notes {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
