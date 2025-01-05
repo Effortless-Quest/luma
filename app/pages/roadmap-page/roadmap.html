@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,  initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <title>Road Map</title>
   <link rel="stylesheet" href="./roadmap.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
   <!-- Back Button (Image) -->
@@ -12,28 +13,153 @@
     <img src="../../../public/img/back-arrow.png" alt="Back" />
   </a>
 
-  <div class="roadmap-container">
+  <div class="lumachat-container">
     <!-- Left Column -->
     <div class="column-left">
-      <h3>Road Map - Left Section</h3>
       <div class="box">
-        <p>Here you can add some details for the left section of the roadmap, such as milestones, goals, or key events.</p>
+        <!-- Chat Section -->
+        <div class="luma-box-chat">
+          <!-- Obsidian Like Nodes-->
+          <div id="obsidianNodes" style="width: 100%; height: 400px; background-color: #f0f0f0;"></div>
+        </div>
       </div>
+    </div>
+
+    <!-- Middle Column -->
+    <div class="column-middle">
       <div class="box">
-        <p>Additional content for the left column.</p>
+        <div class="luma-box-chat">
+          <!-- File and Folder Explorer -->
+          <div id="fileExplorer" style="height: 500px; overflow-y: auto;">
+            <div>Please choose a folder to start.</div> <!-- Initial state -->
+          </div>
+          <button id="chooseFolderBtn">Choose Folder</button> <!-- Choose Folder Button -->
+          <button id="newNoteBtn" class="newnote" disabled>New Note</button> <!-- New Note Button -->
+
+          <!-- Path Search Section -->
+          <div class="path-search">
+            <input type="text" id="pathInput" placeholder="Enter path..." />
+            <button id="navigateToPathBtn">Go</button>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Right Column -->
     <div class="column-right">
-      <h3>Road Map - Right Section</h3>
       <div class="box">
-        <p>Here you can add more detailed information, visualizations, or interactive elements related to the roadmap.</p>
-      </div>
-      <div class="box">
-        <p>Additional content for the right column with more space.</p>
+        <div class="luma-box-chat">
+          <h3>Note Editor</h3>
+          <textarea id="editor" placeholder="Select a file to edit..." class="texteditor" readonly></textarea>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Custom Context Menu -->
+  <div id="contextMenu" style="display: none; position: absolute; background-color: white; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1000;">
+    <ul style="list-style-type: none; padding: 0; margin: 0;">
+      <li id="openFile">Open</li>
+      <li id="renameFile">Rename</li>
+      <li id="deleteFile">Delete</li>
+    </ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const width = document.getElementById('obsidianNodes').clientWidth;
+      const height = document.getElementById('obsidianNodes').clientHeight;
+
+      const svg = d3.select("#obsidianNodes")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const nodes = [
+        { id: "Node 1" },
+        { id: "Node 2" },
+        { id: "Node 3" },
+        { id: "Node 4" }
+      ];
+
+      const links = [
+        { source: "Node 1", target: "Node 2" },
+        { source: "Node 2", target: "Node 3" },
+        { source: "Node 3", target: "Node 4" },
+        { source: "Node 4", target: "Node 1" }
+      ];
+
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+
+      const link = svg.selectAll(".link")
+        .data(links)
+        .enter()
+        .append("line")
+        .attr("class", "link")
+        .attr("stroke", "#999")
+        .attr("stroke-width", 2);
+
+      const node = svg.selectAll(".node")
+        .data(nodes)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", 10)
+        .attr("fill", "#69b3a2")
+        .call(drag(simulation));
+
+      const label = svg.selectAll(".label")
+        .data(nodes)
+        .enter()
+        .append("text")
+        .attr("class", "label")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .text(d => d.id);
+
+      simulation.on("tick", () => {
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+        node
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
+
+        label
+          .attr("x", d => d.x)
+          .attr("y", d => d.y);
+      });
+
+      function drag(simulation) {
+        function dragstarted(event, d) {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+
+        return d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended);
+      }
+    });
+  </script>
 </body>
 </html>
