@@ -133,6 +133,29 @@ body {
   padding: 20px;
 }
 
+.user-message {
+  background-color: #d1f7c4;
+  text-align: right;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 8px;
+}
+
+.ai-message {
+  background-color: #f1f1f1;
+  text-align: left;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 8px;
+}
+
+#chat-conversation {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+} 
+
 /* Notes Box */
 .notes-box-chat {
   background: rgb(255, 255, 255);
