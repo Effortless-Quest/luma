@@ -25,6 +25,23 @@ else:
 
 interaction_count = 0  # Track number of interactions
 
+def load_training_data():
+    training_file_path = "./luma-memory/training/training.md"
+    if not os.path.exists(training_file_path):
+        print("No training data found.")
+        return []
+
+    training_data = []
+    with open(training_file_path, "r", encoding="utf-8") as file:
+        entries = file.read().split("\n---\n")
+        for entry in entries:
+            if entry.strip():
+                parts = entry.split("### AI Response:")
+                user_input = parts[0].replace("### User Input:", "").strip()
+                ai_response = parts[1].strip() if len(parts) > 1 else ""
+                training_data.append((user_input, ai_response))
+    return training_data
+
 def update_memory(user_input, response):
     """Update the memory with new user input and model response."""
     global memory, interaction_count
@@ -152,5 +169,36 @@ def chat():
 
     return jsonify({"response": response})
 
+@app.route("/edit_response", methods=["POST"])
+def edit_response():
+    global memory
+    
+    data = request.json
+    user_input = data.get("user_input")
+    ai_response = data.get("ai_response")
+    
+    if not user_input or not ai_response:
+        return jsonify({"error": "Both user_input and ai_response are required"}), 400
+
+    # Generate a unique key for this new interaction
+    interaction_key = f"interaction_{len(memory)}"
+    
+    # Save this interaction in the memory
+    memory[interaction_key] = {
+        "user_input": user_input,
+        "response": ai_response
+    }
+    
+    # Save the memory to the file
+    with open(memory_file, "w") as file:
+        json.dump(memory, file, indent=4)
+    
+    return jsonify({"message": "Training data updated successfully"})
+
 if __name__ == "__main__":
+    # Load training data before starting the app
+    training_data = load_training_data()
+    for user_input, ai_response in training_data:
+        update_memory(user_input, ai_response)  # Populate memory with pre-existing training data
+    
     app.run(port=5000)

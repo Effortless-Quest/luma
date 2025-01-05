@@ -1,0 +1,197 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Back Button */
+.back-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.back-button img {
+  width: 35px;
+}
+
+/* Settings Container */
+.settings-container {
+  width: 90%;
+  height: 90vh;
+  margin: 50px auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header {
+  background-color: #f5f5f5;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.close-button {
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Settings Content Layout */
+.settings-content {
+  display: flex;
+  gap: 20px;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 200px;
+  border-right: 1px solid #ccc;
+  background-color: #f9f9f9;
+  height: 85vh;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.sidebar ul li:hover, .sidebar ul li.active {
+  background-color: #e0e0e0;
+}
+
+.sidebar a {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.main-content h2 {
+  font-size: 2rem;
+  color: #0073e6;
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+textarea:focus {
+  border-color: #0073e6;
+  outline: none;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #0073e6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #005bb5;
+}
+
+/* Buttons inside sections */
+.buttons {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.save-button {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.edit-link {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 10px;
+}
+
+.sign-out-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .settings-content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+}

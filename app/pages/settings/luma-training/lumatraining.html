@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Luma</title>
+    <link rel="stylesheet" href="./lumatraining.css">
+</head>
+<body>
+   <!-- Back Button (Image) -->
+   <a href="../../../../index.html" class="back-button">
+    <img src="../../../../public/img/back-arrow.png" alt="Back" />
+  </a>
+  
+    <div class="settings-container">
+        <header>
+            <h1>Train Luma</h1>
+        </header>
+        <div class="settings-content">
+            <div class="sidebar">
+                <ul>
+                    <li><a href="../accounts/accounts.html">Accounts</a></li>
+                    <li><a href="./integrations.html">Integrations</a></li>
+                    <li><a href="../appearance/appearance.html">Appearance</a></li>
+                    <li class="active"><a href="../luma-training/lumatraining.html">Train Luma</a></li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <h2>Provide Training Data</h2>
+                <form id="train-form">
+                    <div>
+                        <label for="user-input">Your Message:</label>
+                        <textarea id="user-input" rows="4" placeholder="Enter the message you said"></textarea>
+                    </div>
+                    <div>
+                        <label for="ai-response">AI's Desired Response:</label>
+                        <textarea id="ai-response" rows="4" placeholder="Enter the AI response you want"></textarea>
+                    </div>
+                    <button type="submit">Submit Training Data</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fs = require('fs');
+        const path = require('path');
+
+        // Path to training.md
+        const trainingFilePath = path.join(__dirname, '../../../../luma-memory/training/training.md');
+
+        // Handling the form submission
+        document.getElementById('train-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const userInput = document.getElementById('user-input').value.trim();
+            const aiResponse = document.getElementById('ai-response').value.trim();
+
+            if (!userInput || !aiResponse) {
+                alert('Both message and response are required!');
+                return;
+            }
+
+            const trainingData = `### User Input:\n${userInput}\n\n### AI Response:\n${aiResponse}\n\n---\n`;
+
+            // Append data to training.md
+            fs.appendFile(trainingFilePath, trainingData, (err) => {
+                if (err) {
+                    console.error("Error writing to training.md:", err);
+                    alert("Failed to save training data.");
+                } else {
+                    alert("Training data saved successfully.");
+                    // Clear the form fields
+                    document.getElementById('user-input').value = '';
+                    document.getElementById('ai-response').value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

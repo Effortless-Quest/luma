@@ -81,8 +81,6 @@ body {
   height: 100%;
 }
 
-
-
 /* Chat Box */
 .luma-box-chat {
   margin-top: 20px;
@@ -147,6 +145,30 @@ body {
   padding: 8px;
   margin: 5px;
   border-radius: 8px;
+}
+
+/* Editable Input for AI Messages */
+.ai-message input {
+  width: 100%;
+  padding: 8px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.ai-message {
+  background-color: #e9ecef;
+}
+
+.ai-message:not(:has(input)) {
+  background-color: #e0e0e0;
+}
+
+.ai-message input:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 #chat-conversation {
