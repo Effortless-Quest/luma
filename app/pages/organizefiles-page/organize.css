@@ -46,7 +46,6 @@
   background-color: #45a049;
 }
 
-
 /* Chat Box */
 .luma-box-chat {
   margin-top: -20px;
@@ -96,7 +95,7 @@
   background-color: white;
   padding: 20px;
 }
- 
+
 /* Back Button Styling */
 .back-button {
   position: absolute;
@@ -136,6 +135,9 @@
   border-radius: 10px;
   height: 85vh;
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Needed for absolute positioning of the button */
 }
 
 /* Optional: Styling for headings inside columns */
@@ -148,34 +150,63 @@ h3 {
   margin-bottom: 20px;
 }
 
-/* Tab container styles */
+/* Container for the tabs */
 .tab-container {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  width: 100%; /* Ensure it takes full width */
 }
 
+/* Tabs section */
 .tabs {
-  display: flex;
-  justify-content: flex-start;
+  display: flex; /* Align tabs horizontally */
+  flex-direction: row; /* Ensures tabs align horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping of tabs */
+  justify-content: flex-start; /* Align tabs to the left */
   background-color: #f1f1f1;
   border-bottom: 1px solid #ccc;
   padding: 5px;
+  overflow-x: auto; /* Allow horizontal scrolling if tabs overflow */
 }
 
+/* Individual tab styling */
 .tab {
   position: relative;
-  padding: 10px 30px 10px 10px;
-  margin-right: 5px;
+  padding: 10px 15px; /* Adjust tab size */
+  margin-right: 5px; /* Space between tabs */
   cursor: pointer;
   background-color: #ddd;
   border: 1px solid #ccc;
   border-radius: 5px 5px 0 0;
+  white-space: nowrap; /* Prevent wrapping of tab text */
+  display: inline-block; /* Ensure tabs are inline */
+  max-width: 200px; /* Limit max width of tabs */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate long tab names */
 }
 
+/* Active tab */
 .tab.active {
   background-color: #fff;
   border-bottom: 1px solid #fff;
+}
+
+/* Add Tab Button styling */
+.add-tab-btn {
+  position: absolute; /* Position relative to .column-right */
+  top: 10px;  /* Distance from the top */
+  right: 10px; /* Distance from the right */
+  padding: 8px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-tab-btn:hover {
+  background-color: #45a049;
 }
 
 .tab .close-btn {
@@ -201,110 +232,62 @@ h3 {
   display: block;
 }
 
-.tab-content iframe {
+.tab-container iframe {
   width: 100%;
-  height: 100%;
+  height: 70vh;
   border: none;
 }
 
-.add-tab-btn {
-  padding: 10px;
-  background-color: #4caf50;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  margin-left: 10px;
-}
-
-.add-tab-btn:hover {
-  background-color: #45a049;
-}
-
-@media (max-width: 700px) { 
-  .column-left {
-      width: 35%; /* Smaller width for left column */
-      background-color: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-  
-    .column-right {
-      width: 40%; /* Larger width for right column */
-      background-color: #e0e0e0;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-    .lumachat-container {
-      flex-direction: column;
-      height: auto;
-    }
-  
-    .column-left, .column-middle, .column-right {
-      width: 100%;
-      height: auto;
-    }
-  
-    .box-luma-conversation {
-      width: 100%;
-      height: 300px;
-    }
-  
-    .luma-box-chat {
-      height: auto;
-      padding: 10px;
-    }
-  
-    .notes-box-chat {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      height: auto;
-    }
-  
-    .column-left-notes, .column-right-notes {
-      width: 100%;
-      margin-bottom: 10px;
-    }
-  }
-@media (min-width: 701px) and (max-width: 1024px) {
-  .column-left {
-      width: 35%; /* Smaller width for left column */
-      background-color: #f4f4f4;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-  
-    .column-right {
-      width: 45%; /* Larger width for right column */
-      background-color: #e0e0e0;
-      padding: 20px;
-      border-radius: 8px;
-      height: 100%;
-    }
-
-  .lumachat-container {
-    flex-direction: row;
+@media (max-width: 700px) {  
+  .settings-container {
+    display: flex;
+    flex-direction: column; /* Stack the columns */
+    justify-content: flex-start;
+    padding: 10px;
   }
 
-  .column-left, .column-middle, .column-right {
+  .column-left, .column-right {
+    width: 100%; /* Full width for both columns */
+    padding: 20px;
+    border-radius: 8px;
     height: auto;
-    min-width: 50vh;
+    margin-top: 10px;
   }
 
-  .box-luma-conversation {
+  .luma-box-chat-input {
+    width: 80%;
+  }
+
+  .column-left {
+    background-color:rgba(244, 244, 244, 0);
     width: 90%;
     margin-left: 10px;
   }
 
+  .column-right {
+    background-color:rgb(255, 255, 255);
+    width: 90%;
+    margin-left: 10px;
+    min-height: 90vh;
+  }
+
+  .box-luma-conversation {
+    width: 89%;
+    height: 300px;
+  }
+
   .luma-box-chat {
+    margin-left: -20px;
+    height: auto;
+    width: 105%;
+    padding: 10px;
+  }
+
+  .notes-box-chat {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 90vh;
+    height: auto;
   }
 
   .column-left-notes, .column-right-notes {
@@ -312,3 +295,71 @@ h3 {
     margin-bottom: 10px;
   }
 }
+
+@media (min-width: 701px) and (max-width: 1024px) {
+  .settings-container {
+    display: flex;
+    flex-direction: row; /* Display the columns next to each other */
+    justify-content: flex-start;
+    padding: 10px;
+  }
+
+  .column-left, .column-right {
+    width: 48%; /* Adjust to ensure columns fit side by side */
+    padding: 20px;
+    border-radius: 8px;
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .luma-box-chat-input {
+    width: 80%;
+  }
+
+  .column-left {
+    background-color: rgba(244, 244, 244, 0);
+  }
+
+  .column-right {
+    background-color: rgb(255, 255, 255);
+    min-height: 87.5vh;
+  }
+
+  .box-luma-conversation {
+    width: 89%;
+    height: 300px;
+  }
+
+  .luma-box-chat {
+    margin-left: -20px;
+    min-height: 90vh;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .notes-box-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+  }
+
+  .column-left-notes, .column-right-notes {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .tab-container iframe {
+    width: 100%;
+    height: 64vh;
+    border: none;
+    overflow-y: auto;
+  }
+
+  .tab-container iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+  }
+}
+
