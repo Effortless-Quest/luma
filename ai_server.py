@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
-import json
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, TrainerCallback
 import os
 import torch
 import threading
+import json
 
 app = Flask(__name__)
 
@@ -15,66 +15,46 @@ model = AutoModelForCausalLM.from_pretrained("bigscience/bloomz-560m")
 context_window = []  # Stores past messages and responses
 max_context_tokens = 1500  # Reserve space for context to fit within 2048 tokens
 
-# Memory storage (JSON file-based simulation)
-memory_file = "memory.json"
-if os.path.exists(memory_file):
-    with open(memory_file, "r") as file:
-        memory = json.load(file)
-else:
-    memory = {}
-
-interaction_count = 0  # Track number of interactions
+# Path to training.json
+training_file_path = "./luma-memory/training/training.json"
 
 def load_training_data():
-    training_file_path = "./luma-memory/training/training.md"
+    """Load training data from the training.json file."""
     if not os.path.exists(training_file_path):
         print("No training data found.")
         return []
 
-    training_data = []
     with open(training_file_path, "r", encoding="utf-8") as file:
-        entries = file.read().split("\n---\n")
-        for entry in entries:
-            if entry.strip():
-                parts = entry.split("### AI Response:")
-                user_input = parts[0].replace("### User Input:", "").strip()
-                ai_response = parts[1].strip() if len(parts) > 1 else ""
-                training_data.append((user_input, ai_response))
-    return training_data
-
-def update_memory(user_input, response):
-    """Update the memory with new user input and model response."""
-    global memory
-
-    memory_entry = {
-        "user_input": user_input,
-        "response": response,
-    }
-    memory_key = f"interaction_{len(memory)}"  # Unique key for each memory
-    memory[memory_key] = memory_entry
+        training_data = json.load(file)
     
-    # Save the memory to the file
-    with open(memory_file, "w") as file:
-        json.dump(memory, file, indent=4)
+    return [(entry["user_input"], entry["ai_response"]) for entry in training_data]
 
-    # Fine-tune the model immediately after updating memory
-    start_fine_tuning()
+def save_training_data(training_data):
+    """Save updated training data back to the training.json file."""
+    with open(training_file_path, "w", encoding="utf-8") as file:
+        json.dump(training_data, file, ensure_ascii=False, indent=4)
 
 def start_fine_tuning():
     """Run fine-tuning in a background thread."""
     threading.Thread(target=fine_tune_model).start()
 
 def fine_tune_model():
-    """Fine-tune the model based on collected memories and save the updated model."""
+    """Fine-tune the model based on the training data and save the updated model."""
     global model, tokenizer  # Ensure model and tokenizer are declared as global here
     print("Starting background fine-tuning...")
+
+    # Load the training data
+    training_data = load_training_data()
+    if not training_data:
+        print("No training data to fine-tune.")
+        return
 
     # Prepare data for fine-tuning
     inputs = []
     labels = []
-    for entry in memory.values():
-        inputs.append(entry["user_input"])
-        labels.append(entry["response"])
+    for user_input, ai_response in training_data:
+        inputs.append(user_input)
+        labels.append(ai_response)
 
     # Tokenize inputs and labels
     input_ids = tokenizer(inputs, return_tensors="pt", padding=True, truncation=True, max_length=512).input_ids
@@ -110,6 +90,15 @@ def fine_tune_model():
         overwrite_output_dir=True,
     )
 
+    # Custom callback class to handle training progress
+    class LogTrainingProgressCallback(TrainerCallback):
+        def on_train_begin(self, args, state, control, **kwargs):
+            print("Training started...")
+
+        def on_log(self, args, state, control, logs=None, **kwargs):
+            if logs:
+                print(f"Training Step {state.global_step} - Loss: {logs.get('loss', 'N/A')}")
+
     # Initialize Trainer
     trainer = Trainer(
         model=model,
@@ -117,13 +106,8 @@ def fine_tune_model():
         train_dataset=dataset,
     )
 
-    # Add a custom callback to monitor training progress
-    def log_training_progress(args, state, control, logs=None):
-        if logs is not None:
-            print(f"Training Step {state.global_step} - Loss: {logs.get('loss', 'N/A')}")
-        return control
-
-    trainer.add_callback(log_training_progress)
+    # Add the custom callback to monitor training progress
+    trainer.add_callback(LogTrainingProgressCallback)
 
     # Fine-tune the model
     print("Training in progress...")
@@ -158,8 +142,9 @@ def chat():
     # Add user input to context
     context_window.append(user_input)
 
-    # Retrieve relevant memories and integrate them into context
-    memory_integration = " ".join([entry['response'] for entry in memory.values()])
+    # Retrieve relevant training data and integrate them into context
+    training_data = load_training_data()  # Load the training data each time (could be optimized)
+    memory_integration = " ".join([entry[1] for entry in training_data])  # Use the AI responses as context
     conversation_input = memory_integration + " " + " ".join(context_window)
 
     # Prepare full conversation input
@@ -172,44 +157,16 @@ def chat():
     # Add the model's response to the context
     context_window.append(response)
 
-    # Update memory with the new interaction
-    update_memory(user_input, response)
+    # Fine-tune the model after this interaction
+    start_fine_tuning()
 
     return jsonify({"response": response})
-
-@app.route("/edit_response", methods=["POST"])
-def edit_response():
-    global memory
-    
-    data = request.json
-    user_input = data.get("user_input")
-    ai_response = data.get("ai_response")
-    
-    if not user_input or not ai_response:
-        return jsonify({"error": "Both user_input and ai_response are required"}), 400
-
-    # Generate a unique key for this new interaction
-    interaction_key = f"interaction_{len(memory)}"
-    
-    # Save this interaction in the memory
-    memory[interaction_key] = {
-        "user_input": user_input,
-        "response": ai_response
-    }
-    
-    # Save the memory to the file
-    with open(memory_file, "w") as file:
-        json.dump(memory, file, indent=4)
-    
-    # Fine-tune the model after this update
-    start_fine_tuning()
-    
-    return jsonify({"message": "Training data updated successfully"})
 
 if __name__ == "__main__":
     # Load and process training data before starting the app
     training_data = load_training_data()
     for user_input, ai_response in training_data:
-        update_memory(user_input, ai_response)  # Populate memory with pre-existing training data
+        # Fine-tune with the pre-existing training data
+        start_fine_tuning()
     
     app.run(port=5000)

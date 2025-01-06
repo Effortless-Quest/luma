@@ -46,8 +46,8 @@
         const fs = require('fs');
         const path = require('path');
 
-        // Path to training.md
-        const trainingFilePath = path.join(__dirname, '../../../../luma-memory/training/training.md');
+        // Path to training.json
+        const trainingFilePath = path.join(__dirname, '../../../../luma-memory/training/training.json');
 
         // Handling the form submission
         document.getElementById('train-form').addEventListener('submit', function (e) {
@@ -61,19 +61,46 @@
                 return;
             }
 
-            const trainingData = `### User Input:\n${userInput}\n\n### AI Response:\n${aiResponse}\n\n---\n`;
+            // Prepare the new training entry
+            const newTrainingData = {
+                "user_input": userInput,
+                "ai_response": aiResponse
+            };
 
-            // Append data to training.md
-            fs.appendFile(trainingFilePath, trainingData, (err) => {
+            // Read the existing training data
+            fs.readFile(trainingFilePath, 'utf8', (err, data) => {
                 if (err) {
-                    console.error("Error writing to training.md:", err);
-                    alert("Failed to save training data.");
-                } else {
-                    alert("Training data saved successfully.");
-                    // Clear the form fields
-                    document.getElementById('user-input').value = '';
-                    document.getElementById('ai-response').value = '';
+                    console.error("Error reading training.json:", err);
+                    alert("Failed to read training data.");
+                    return;
                 }
+
+                let trainingData = [];
+                if (data) {
+                    try {
+                        trainingData = JSON.parse(data); // Parse existing JSON data
+                    } catch (parseError) {
+                        console.error("Error parsing training.json:", parseError);
+                        alert("Failed to parse existing training data.");
+                        return;
+                    }
+                }
+
+                // Add new training entry
+                trainingData.push(newTrainingData);
+
+                // Save the updated training data back to the file
+                fs.writeFile(trainingFilePath, JSON.stringify(trainingData, null, 4), (err) => {
+                    if (err) {
+                        console.error("Error writing to training.json:", err);
+                        alert("Failed to save training data.");
+                    } else {
+                        alert("Training data saved successfully.");
+                        // Clear the form fields
+                        document.getElementById('user-input').value = '';
+                        document.getElementById('ai-response').value = '';
+                    }
+                });
             });
         });
     </script>
