@@ -117,11 +117,7 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Folder System */
-#fileExplorer {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
+/
 
 .folder, .file {
   padding: 8px;
@@ -153,6 +149,65 @@ body {
 .folder .folder-icon, .file .file-icon {
   margin-right: 8px;
   font-size: 18px;
+}
+
+ /* Initially hide everything except the folder selection button */
+ .folder-content {
+  display: none; /* Hidden by default */
+  height: 80%; /* Take up the full height of the parent */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box; /* Ensure padding doesn't affect the width/height */
+  margin-top: 0px;
+  margin-bottom: -30px;
+}
+
+#fileExplorer1,
+#fileExplorer2 {
+  max-height: 100%; /* Ensure the file explorer does not exceed the parent height */
+}
+
+  .file-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .folder {
+    font-weight: bold;
+  }
+
+#fileExplorer1 {
+  margin: 0; /* Remove any outer margin */
+  padding: 0; /* Remove inner padding */
+}
+
+#fileExplorer1 div {
+  margin: 0; /* Remove space around each file element */
+  padding: 5px; /* Adjust padding for better spacing */
+  background-color: #d9f7c9; /* Same color as in your screenshot */
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Retain font style */
+  border: 1px solid #ccc; /* Optional: Add a border for visual separation */
+}
+
+#fileExplorer1 div:not(:last-child) {
+  margin-bottom: 2px; /* Optional: Add a small space only between elements */
+}
+
+
+#fileExplorer2 {
+  margin: 0; /* Remove any outer margin */
+  padding: 0; /* Remove inner padding */
+}
+
+#fileExplorer2 div {
+  margin: 0; /* Remove space around each file element */
+  padding: 5px; /* Adjust padding for better spacing */
+  background-color: #d9f7c9; /* Same color as in your screenshot */
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Retain font style */
+  border: 1px solid #ccc; /* Optional: Add a border for visual separation */
+}
+
+#fileExplorer2 div:not(:last-child) {
+  margin-bottom: 2px; /* Optional: Add a small space only between elements */
 }
 
 #chooseFolderBtn1, #chooseFolderBtn2 {
@@ -214,7 +269,7 @@ body {
 }
 
 .input-area button {
-  width: 15%;
+  width: 20%;
   padding: 10px;
   background-color: #007bff;
   color: white;
@@ -222,8 +277,28 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-family: 'Virgil', sans-serif;
+  margin-right: auto;
+  margin-left: 10px;
 }
 
 .input-area button:hover {
   background-color: #0056b3;
 }
+
+.chatbutton{
+ 
+}
+
+
+@media (min-width: 701px) and (max-width: 1024px) {
+
+.folder-content {
+  display: none; /* Hidden by default */
+  height: 50%; /* Take up the full height of the parent */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box; /* Ensure padding doesn't affect the width/height */
+  margin-top: -50px;
+  margin-bottom: -100px;
+}
+}
+
