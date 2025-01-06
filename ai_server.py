@@ -44,7 +44,7 @@ def load_training_data():
 
 def update_memory(user_input, response):
     """Update the memory with new user input and model response."""
-    global memory, interaction_count
+    global memory
 
     memory_entry = {
         "user_input": user_input,
@@ -57,13 +57,12 @@ def update_memory(user_input, response):
     with open(memory_file, "w") as file:
         json.dump(memory, file, indent=4)
 
-    # Increment interaction count
-    interaction_count += 1
+    # Fine-tune the model immediately after updating memory
+    start_fine_tuning()
 
-    # Trigger fine-tuning every 50 interactions
-    if interaction_count >= 50:
-        interaction_count = 0
-        threading.Thread(target=fine_tune_model, daemon=True).start()  # Start fine-tuning in the background
+def start_fine_tuning():
+    """Run fine-tuning in a background thread."""
+    threading.Thread(target=fine_tune_model).start()
 
 def fine_tune_model():
     """Fine-tune the model based on collected memories and save the updated model."""
@@ -78,8 +77,8 @@ def fine_tune_model():
         labels.append(entry["response"])
 
     # Tokenize inputs and labels
-    input_ids = tokenizer(inputs, return_tensors="pt", padding=True, truncation=True).input_ids
-    label_ids = tokenizer(labels, return_tensors="pt", padding=True, truncation=True).input_ids
+    input_ids = tokenizer(inputs, return_tensors="pt", padding=True, truncation=True, max_length=512).input_ids
+    label_ids = tokenizer(labels, return_tensors="pt", padding=True, truncation=True, max_length=512).input_ids
 
     # Create a Dataset (a simple torch Dataset in this case)
     class MemoryDataset(torch.utils.data.Dataset):
@@ -102,11 +101,11 @@ def fine_tune_model():
     training_args = TrainingArguments(
         output_dir="./fine_tuned_model",
         num_train_epochs=1,  # For simplicity, fine-tuning for 1 epoch (can be adjusted)
-        per_device_train_batch_size=2,
+        per_device_train_batch_size=1,  # Reduce batch size if you're encountering memory issues
         logging_dir="./logs",
         logging_steps=10,
         save_steps=100,
-        evaluation_strategy="steps",
+        evaluation_strategy="no",
         save_total_limit=2,
         overwrite_output_dir=True,
     )
@@ -118,7 +117,16 @@ def fine_tune_model():
         train_dataset=dataset,
     )
 
+    # Add a custom callback to monitor training progress
+    def log_training_progress(args, state, control, logs=None):
+        if logs is not None:
+            print(f"Training Step {state.global_step} - Loss: {logs.get('loss', 'N/A')}")
+        return control
+
+    trainer.add_callback(log_training_progress)
+
     # Fine-tune the model
+    print("Training in progress...")
     trainer.train()
 
     # Save the fine-tuned model
@@ -193,10 +201,13 @@ def edit_response():
     with open(memory_file, "w") as file:
         json.dump(memory, file, indent=4)
     
+    # Fine-tune the model after this update
+    start_fine_tuning()
+    
     return jsonify({"message": "Training data updated successfully"})
 
 if __name__ == "__main__":
-    # Load training data before starting the app
+    # Load and process training data before starting the app
     training_data = load_training_data()
     for user_input, ai_response in training_data:
         update_memory(user_input, ai_response)  # Populate memory with pre-existing training data

@@ -5,3 +5,11 @@ hi how are you?
 I'm doing great how are you?
 
 ---
+
+### User Input:
+What is my favorite color?
+
+### AI Response:
+Your favorite color is blue!
+
+---
