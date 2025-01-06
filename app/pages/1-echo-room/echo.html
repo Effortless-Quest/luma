@@ -37,6 +37,7 @@
           <div id="fileExplorer1"></div>
         </div>
         <button id="chooseFolderBtn1">Choose Project</button>
+        <button id="backBtn1" style="display: none;">Back</button>
       </div>
 
       <!-- Square 2 -->
@@ -53,91 +54,155 @@
           <div id="fileExplorer2"></div>
         </div>
         <button id="chooseFolderBtn2">Choose Folder</button>
+        <button id="backBtn2" style="display: none;">Back</button>
       </div>
-
 
       <!-- Square 4 -->
       <div class="card" style="grid-row: 2; grid-column: 2; background-color: #cccccc;">
         <p>Edit File</p>
         <textarea id="fileEditor" style="width: 100%; height: 80%;"></textarea>
-        <button id="saveFileBtn">Save</button>
       </div>
     </div>
   </div>
 
   <script>
-    // File and Folder Explorer Section
     const { ipcRenderer } = require('electron');
     const fs = require('fs');
     const path = require('path');
-
+  
     const chooseFolderBtn1 = document.getElementById('chooseFolderBtn1');
     const chooseFolderBtn2 = document.getElementById('chooseFolderBtn2');
     const folder1Content = document.getElementById('folder1Content');
     const folder2Content = document.getElementById('folder2Content');
     const fileExplorer1 = document.getElementById('fileExplorer1');
     const fileExplorer2 = document.getElementById('fileExplorer2');
-
-    let currentDirectory = null;
-
-    function loadDirectory(directoryPath, fileExplorer) {
+    const backBtn1 = document.getElementById('backBtn1');
+    const backBtn2 = document.getElementById('backBtn2');
+    const fileEditor = document.getElementById('fileEditor');
+    const saveFileBtn = document.getElementById('saveFileBtn');
+    
+    let currentDirectory1 = null;
+    let currentDirectory2 = null;
+    let currentFilePath = null;
+    
+    // Global variable to keep track of the last saved content to prevent excessive saves
+    let lastSavedContent = '';
+    
+    // Load Directory Function (shared by both Square 1 and Square 3)
+    function loadDirectory(directoryPath, fileExplorer, backButton, isFolder1) {
       if (!directoryPath) {
         alert('No folder selected. Please choose a folder first.');
         return;
       }
-
+  
       fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
         if (err) {
           alert('Error reading directory: ' + err.message);
           return;
         }
-
+  
         fileExplorer.innerHTML = '';
-
         files.forEach(file => {
           const filePath = path.join(directoryPath, file.name);
           const fileElement = document.createElement('div');
           const fileText = document.createElement('span');
           fileText.textContent = file.name;
-
+  
           fileElement.classList.add('file-item');
           fileElement.classList.add(file.isDirectory() ? 'folder' : 'file');
           fileElement.appendChild(fileText);
-
+  
           fileElement.addEventListener('click', () => {
             if (file.isDirectory()) {
-              loadDirectory(filePath, fileExplorer);  // Navigate into the folder
+              loadDirectory(filePath, fileExplorer, backButton, isFolder1);  // Navigate into the folder
             } else {
-              alert(`File selected: ${file.name}`);  // Placeholder for file interaction
+              currentFilePath = filePath;
+              loadFileToEditor(filePath);
             }
           });
-
+  
           fileExplorer.appendChild(fileElement);
         });
+  
+        // Show back button when we are inside a folder
+        backButton.style.display = directoryPath !== '/' ? 'block' : 'none';
+  
+        if (isFolder1) {
+          currentDirectory1 = directoryPath;  // Store the directory path for folder 1
+        } else {
+          currentDirectory2 = directoryPath;  // Store the directory path for folder 2
+        }
       });
     }
-
+  
+    // Load the selected file into the editor
+    function loadFileToEditor(filePath) {
+      fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) {
+          alert('Error reading file: ' + err.message);
+          return;
+        }
+        fileEditor.value = data;
+        lastSavedContent = data; // Store the current content as the last saved content
+      });
+    }
+  
+    // Autosave function to save the file
+    function autoSave() {
+      if (currentFilePath && fileEditor.value !== lastSavedContent) {
+        fs.writeFile(currentFilePath, fileEditor.value, 'utf-8', (err) => {
+          if (err) {
+            console.error('Error saving file: ', err.message);
+            return;
+          }
+          lastSavedContent = fileEditor.value; // Update the last saved content
+          console.log('File autosaved');
+        });
+      }
+    }
+  
+    // Debounced autosave: Only save if user is idle for 1 second
+    let autoSaveTimeout;
+    fileEditor.addEventListener('input', () => {
+      clearTimeout(autoSaveTimeout);
+      autoSaveTimeout = setTimeout(autoSave, 1000); // Save after 1 second of inactivity
+    });
+  
+    // Back button functionality
+    backBtn1.addEventListener('click', () => {
+      const parentDir = path.dirname(currentDirectory1);
+      loadDirectory(parentDir, fileExplorer1, backBtn1, true);
+    });
+  
+    backBtn2.addEventListener('click', () => {
+      const parentDir = path.dirname(currentDirectory2);
+      loadDirectory(parentDir, fileExplorer2, backBtn2, false);
+    });
+  
     chooseFolderBtn1.addEventListener('click', () => {
       ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
         if (folderPath) {
-          folder1Content.style.display = 'block';  // Show content for Folder 1
-          loadDirectory(folderPath, fileExplorer1);
+          folder1Content.style.display = 'block';
+          loadDirectory(folderPath, fileExplorer1, backBtn1, true);
         }
       }).catch((err) => {
         alert('Error selecting folder: ' + err.message);
       });
     });
-
+  
     chooseFolderBtn2.addEventListener('click', () => {
       ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
         if (folderPath) {
-          folder2Content.style.display = 'block';  // Show content for Folder 2
-          loadDirectory(folderPath, fileExplorer2);
+          folder2Content.style.display = 'block';
+          loadDirectory(folderPath, fileExplorer2, backBtn2, false);
         }
       }).catch((err) => {
         alert('Error selecting folder: ' + err.message);
       });
     });
+  
+    
   </script>
+  
 </body>
 </html>
