@@ -38,7 +38,7 @@
       <h2>Welcome Back </h2>
       <h2>[User's Name]</h2>
     </div>
-      <div class="welcome-info">
+    <div class="welcome-info">
       <a href="./app/pages/settings/accounts/accounts.html">
         <button class="settings-button">
           <img src="./public/img/settings.png" alt="Custom Image" />
@@ -47,89 +47,80 @@
     </div>
   </div>
   
- <!-- Road Map Section -->
-<div class="box-roadmap">
-  <h3>Road Map</h3>
-  <!-- Wrap button in anchor tag for navigation -->
-  <a href="./app/pages/roadmap-page/roadmap.html">
-    <button class="expand-button">
-      <img src="./public/img/expand.png" alt="Custom Image" />
-    </button>
-  </a>
-  <div class="box-roadmap-obsidian">
-    <div id="obsidianNodes" class="nodes-graph" ></div>
+  <!-- Road Map Section -->
+  <div class="box-roadmap">
+    <h3>Road Map</h3>
+    <a href="./app/pages/roadmap-page/roadmap.html">
+      <button class="expand-button">
+        <img src="./public/img/expand.png" alt="Custom Image" />
+      </button>
+    </a>
+    <div class="box-roadmap-obsidian">
+      <div id="obsidianNodes" class="nodes-graph" ></div>
+    </div>
   </div>
-</div>
-
+ <!-- Reminders Section -->
+  <div class="reminders-box-chat">
+    <h3>Session Reminders 
+      <span class="info-icon">i</span>
+    </h3>
+    <div id="reminders-list"></div>
+    <div class="add-reminder">
+      <input id="reminder-input" type="text" placeholder="Add a new reminder..." />
+      <button id="add-reminder-button">Add</button>
+    </div>
+  </div>
   
-  <!-- Reminders Section -->
-  <!-- Reminders Section -->
-<div class="reminders-box-chat">
-  <h3>Reminders</h3>
-  <div id="reminders-list"></div>
-  <div class="add-reminder">
-    <input id="reminder-input" type="text" placeholder="Add a new reminder..." />
-    <button id="add-reminder-button">Add</button>
-  </div>
-</div>
-
+  
 
   <!-- Chat Section -->
   <div class="luma-box-chat">
     <h3>Chat with Luma</h3>
     <div class="box-luma-conversation" id="chat-conversation"></div>
-    
-    <!-- Container for the input box and send button -->
     <div class="chat-input-container">
-      <input
-        class="luma-box-chat-input"
-        id="chat-input"
-        type="text"
-        placeholder="Type a message..."
-      />
-      <!-- Send message button as an image -->
+      <input class="luma-box-chat-input" id="chat-input" type="text" placeholder="Type a message..." />
       <button class="send-message-button" id="send-message-button">
         <img src="./public/img/sendbutton.png" alt="Send Message" />
       </button>
     </div>
   </div>
+<!-- Directory Section -->
+   <div class="directory hand-drawn-text">
+    <button class="directory-settings" onclick="navigateToPage('./app/pages/settings/accounts/accounts.html')">Echo Room</button>
+    <button class="directory-settings" onclick="navigateToPage('./app/pages/reminders-page/reminders.html')">RoadMap</button>
+    <button class="directory-settings" onclick="navigateToPage('./app/pages/organizefiles-page/organize.html')">Invention Center</button>
+    <button class="directory-settings" onclick="navigateToPage('./app/pages/chat-page/chat.html')">Concept Lab</button>
+    <button class="directory-settings" onclick="navigateToPage('./app/pages/inventions-page/inventions.html')">Education Center</button>  
 
-  <!-- Directory Section -->
-  <div class="directory hand-drawn-text">
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/settings/accounts/accounts.html')">Settings</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/reminders-page/reminders.html')">Memories</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/organizefiles-page/organize.html')">Organize Files</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/chat-page/chat.html')">My Quest</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/inventions-page/inventions.html')">Invention Center</button>  
-    <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/')">
-      <button class="directory-r">
-        <img src="./public/img/elif.png" alt="Custom Image" />
-      </button>
-    </a>
-    <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/2/videos')">
-      <button class="directory-resources">
-        <img src="./public/img/easyflowmedia.png" alt="Custom Image" />
-      </button>
-    </a>
-    <a href="#" onclick="openBrowserView('https://www.effortlessworks.store/')">
-      <button class="directory-resources">
-        <img src="./public/img/effortlessworks.png" alt="Custom Image" />
-      </button>
-    </a>
-    <a href="#" onclick="openBrowserView('https://www.effortless.quest/')">
-      <button class="directory-resources">
-        <img src="./public/img/effortlessquest.png" alt="Custom Image" />
-      </button>
-    </a>
-  </div>
+  <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/')">
+    <button class="directory-r">
+      <img src="./public/img/elif.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/2/videos')">
+    <button class="directory-resources">
+      <img src="./public/img/easyflowmedia.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.effortlessworks.store/')">
+    <button class="directory-resources">
+      <img src="./public/img/effortlessworks.png" alt="Custom Image" />
+    </button>
+  </a>
+  <a href="#" onclick="openBrowserView('https://www.effortless.quest/')">
+    <button class="directory-resources">
+      <img src="./public/img/effortlessquest.png" alt="Custom Image" />
+    </button>
+  </a>
+</div>
 
-  <!-- Browser View Section -->
-  <div id="browser-view" class="hidden">
-    <button class="back-button" onclick="closeBrowserView()">x</button>
-    <iframe id="iframe" src="" frameborder="0"></iframe>
-  </div>
+<!-- Browser View Section -->
+<div id="browser-view" class="hidden">
+  <button class="back-button" onclick="closeBrowserView()">x</button>
+  <iframe id="iframe" src="" frameborder="0"></iframe>
+</div>
 
-  <div class="box footer"></div>
+<div class="box footer"></div>
 
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -233,14 +224,9 @@
   
       // Resize handler
       window.addEventListener("resize", () => {
-        // Update container dimensions
         width = container.clientWidth;
         height = container.clientHeight;
-  
-        // Update SVG size
         svg.attr("width", width).attr("height", height);
-  
-        // Update simulation forces
         simulation.force("center", d3.forceCenter(width / 2, height / 2));
         simulation.alpha(1).restart();
       });
@@ -250,7 +236,6 @@
       const reminderInput = document.getElementById('reminder-input');
       const addReminderButton = document.getElementById('add-reminder-button');
   
-      // Function to add a reminder
       function addReminder(text) {
         const reminder = document.createElement('div');
         reminder.className = 'reminder';
@@ -264,39 +249,66 @@
         reminderText.textContent = text;
         reminder.appendChild(reminderText);
   
-        // Add click event to toggle check/uncheck and remove after delay if checked
         circle.addEventListener('click', () => {
           if (reminder.classList.contains('checked')) {
-            reminder.classList.remove('checked'); // Uncheck if already checked
+            reminder.classList.remove('checked');
           } else {
-            reminder.classList.add('checked'); // Mark as checked
+            reminder.classList.add('checked');
             setTimeout(() => {
               if (reminder.classList.contains('checked')) {
-                remindersList.removeChild(reminder); // Remove after 2 seconds if still checked
+                remindersList.removeChild(reminder);
               }
             }, 2000);
           }
         });
   
         remindersList.appendChild(reminder);
+        saveReminderToFile(text);
       }
   
-      // Add button click listener
+      async function saveReminderToFile(text) {
+        try {
+          const response = await fetch('http://localhost:5000/save-reminder', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reminder: text })
+          });
+          if (!response.ok) {
+            console.error('Error saving reminder');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+  
+      async function loadReminders() {
+        try {
+          const response = await fetch('http://localhost:5000/load-reminders');
+          const reminders = await response.json();
+          reminders.forEach(reminder => {
+            addReminder(reminder);
+          });
+        } catch (error) {
+          console.error('Error loading reminders:', error);
+        }
+      }
+  
+      loadReminders();
+  
       addReminderButton.addEventListener('click', () => {
         const text = reminderInput.value.trim();
         if (text) {
           addReminder(text);
-          reminderInput.value = ''; // Clear the input field
+          reminderInput.value = '';
         }
       });
   
-      // Add "Enter" key listener for the input field
       reminderInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
           const text = reminderInput.value.trim();
           if (text) {
             addReminder(text);
-            reminderInput.value = ''; // Clear the input field
+            reminderInput.value = '';
           }
         }
       });
@@ -346,6 +358,5 @@
       });
     });
   </script>
-  
 </body>
 </html>

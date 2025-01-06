@@ -303,6 +303,51 @@ h1, h2, h3, h4, h5, h6, p {
   flex-grow: 1;
 }
 
+.info-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 10px;
+  position: relative; /* Required for positioning the tooltip */
+}
+
+.info-icon:hover {
+  background-color: #0056b3;
+  opacity: 0.8;
+}
+
+.info-icon:hover::after {
+  content: "Once the app is closed the reminders will reset"; /* Directly specify the tooltip text */
+  position: absolute;
+  bottom: 120%; /* Position the tooltip above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px;
+  background-color:rgb(0, 0, 0); /* Fully opaque black background */
+  color: white; /* White text */
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap; /* Prevent text wrapping */
+  z-index: 100;
+  opacity: 1;
+  visibility: visible;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5); /* Optional shadow for extra visibility */
+}
+
+.info-icon::after {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s; /* Smooth transition */
+}
+
 
   
   .luma-box-chat {
