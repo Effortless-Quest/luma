@@ -1,0 +1,229 @@
+/* echo.css */
+
+/* Adding custom font 'Virgil' */
+@font-face {
+  font-family: 'Virgil';
+  src: url('../../../assets/fonts/Virgil-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Apply Inter font to all headings */
+h1, h2, h3, h4, h5, h6, p {
+  font-family: 'Virgil', sans-serif;
+}
+
+/* Back Button */
+.back-button {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.back-button img {
+  width: 35px;
+}
+
+
+body {
+  font-family: 'Virgil', Arial, sans-serif; /* Apply 'Virgil' font to the body */
+  height: 100vh;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.left-column {
+  width: 40%;
+  padding: 10px;
+}
+
+.right-column {
+  width: 60%;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;  /* Adjust rows to fit content */
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 20px;
+}
+
+.card-1 {
+  grid-row: 1;
+  grid-column: 1;
+  background-color: #f2f2f2;
+}
+
+.card-2 {
+  grid-row: 1;
+  grid-column: 2;
+  background-color: #e6e6e6;
+}
+
+.card-3 {
+  grid-row: 2;
+  grid-column: 1;
+  background-color: #d9d9d9;
+}
+
+.card-4 {
+  grid-row: 2;
+  grid-column: 2;
+  background-color: #cccccc;
+}
+
+/* Folder Breadcrumb */
+.folder-breadcrumb {
+  font-size: 10px;
+  color: #333;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Folder System */
+#fileExplorer {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.folder, .file {
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.folder {
+  background-color: #e7f0d1;
+}
+
+.folder:hover {
+  background-color: #d0e0b2;
+}
+
+.file {
+  background-color: #d1e7ff;
+}
+
+.file:hover {
+  background-color: #a7c6ff;
+}
+
+/* Folder Icons */
+.folder .folder-icon, .file .file-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+#chooseFolderBtn1, #chooseFolderBtn2 {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#chooseFolderBtn1:hover, #chooseFolderBtn2:hover {
+  background-color: #0056b3;
+}
+
+.chat-box {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: calc(100% - 60px); /* Adjust for input area */
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #e1e1e1;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.message.ai {
+  background-color: #d1e7dd;
+  align-self: flex-start;
+}
+
+.message.user {
+  background-color: #cce5ff;
+  align-self: flex-end;
+}
+
+.input-area {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.input-area input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Virgil', sans-serif;
+}
+
+.input-area button {
+  width: 15%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Virgil', sans-serif;
+}
+
+.input-area button:hover {
+  background-color: #0056b3;
+}
