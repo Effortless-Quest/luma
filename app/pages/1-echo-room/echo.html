@@ -42,8 +42,16 @@
 
       <!-- Square 2 -->
       <div class="card" style="grid-row: 1; grid-column: 2; background-color: #e6e6e6;">
-        <p>Card 2</p>
+        <p>Audio Recorder</p>
+        <div id="audioControls">
+          <button id="startRecordingBtn">Start Recording</button>
+          <button id="pauseRecordingBtn" disabled>Pause Recording</button>
+          <button id="stopRecordingBtn" disabled>Stop/Save Recording</button>
+        </div>
+        <p id="recordingStatus">Status: Idle</p>
+        <audio id="audioPlayback" controls style="width: 100%; display: none;"></audio>
       </div>
+
 
       <!-- Square 3 (Folder Finder 2) -->
       <div class="card" style="grid-row: 2; grid-column: 1; background-color: #f2f2f2;">
@@ -80,14 +88,23 @@
     const backBtn2 = document.getElementById('backBtn2');
     const fileEditor = document.getElementById('fileEditor');
     const saveFileBtn = document.getElementById('saveFileBtn');
-    
+  
     let currentDirectory1 = null;
     let currentDirectory2 = null;
     let currentFilePath = null;
-    
+  
     // Global variable to keep track of the last saved content to prevent excessive saves
     let lastSavedContent = '';
-    
+  
+    // Audio Recording Variables
+    let mediaRecorder;
+    let audioChunks = [];
+    const startBtn = document.getElementById('startRecordingBtn');
+    const pauseBtn = document.getElementById('pauseRecordingBtn');
+    const stopBtn = document.getElementById('stopRecordingBtn');
+    const recordingStatus = document.getElementById('recordingStatus');
+    const audioPlayback = document.getElementById('audioPlayback');
+  
     // Load Directory Function (shared by both Square 1 and Square 3)
     function loadDirectory(directoryPath, fileExplorer, backButton, isFolder1) {
       if (!directoryPath) {
@@ -201,8 +218,80 @@
       });
     });
   
-    
-  </script>
+    // Audio Recording Logic
+    async function initRecorder() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
   
+        mediaRecorder.ondataavailable = (event) => {
+          audioChunks.push(event.data);
+        };
+  
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const buffer = Buffer.from(await audioBlob.arrayBuffer());
+  
+          const { filePath } = await ipcRenderer.invoke('dialog:saveFile', {
+            title: 'Save Audio Recording',
+            defaultPath: 'recording.webm',
+            filters: [{ name: 'Audio Files', extensions: ['webm'] }],
+          });
+  
+          if (filePath) {
+            fs.writeFile(filePath, buffer, (err) => {
+              if (err) {
+                console.error('Error saving audio file: ', err.message);
+                alert('Failed to save audio file.');
+              } else {
+                alert(`Audio recording saved to: ${filePath}`);
+              }
+            });
+          }
+  
+          // Reset chunks for the next recording
+          audioChunks = [];
+        };
+      } catch (err) {
+        alert('Error accessing microphone: ' + err.message);
+      }
+    }
+  
+    startBtn.addEventListener('click', () => {
+      if (!mediaRecorder) {
+        alert('Audio Recorder not initialized.');
+        return;
+      }
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      stopBtn.disabled = false;
+      recordingStatus.textContent = 'Status: Recording...';
+    });
+  
+    pauseBtn.addEventListener('click', () => {
+      if (mediaRecorder.state === 'recording') {
+        mediaRecorder.pause();
+        pauseBtn.textContent = 'Resume Recording';
+        recordingStatus.textContent = 'Status: Paused';
+      } else if (mediaRecorder.state === 'paused') {
+        mediaRecorder.resume();
+        pauseBtn.textContent = 'Pause Recording';
+        recordingStatus.textContent = 'Status: Recording...';
+      }
+    });
+  
+    stopBtn.addEventListener('click', () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      stopBtn.disabled = true;
+      pauseBtn.textContent = 'Pause Recording';
+      recordingStatus.textContent = 'Status: Idle';
+    });
+  
+    // Initialize recorder when the page loads
+    initRecorder();
+  </script>
 </body>
 </html>

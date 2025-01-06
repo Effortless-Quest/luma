@@ -147,3 +147,14 @@ ipcMain.handle('dialog:openDirectory', async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+// Handle file save dialog request specifically for saving audio recordings
+ipcMain.handle('dialog:saveFile', async (_event, options: Electron.SaveDialogOptions) => {
+  const filePath = dialog.showSaveDialogSync(options); // Use the synchronous version for older APIs
+
+  if (filePath) {
+    return { filePath };
+  }
+  return { filePath: null };
+});
+
