@@ -28,7 +28,7 @@
   }
 </script>
 <body class="hand-drawn-text">
-  <div class="box header">
+  <div class="box-header">
     <div class="profile-icon">
       <!-- Placeholder for the profile image -->
       <img id="profileImage" src="./public/img/youu.png" alt="Profile Icon" />
@@ -37,8 +37,13 @@
     <div class="welcome-info">
       <h2>Welcome Back </h2>
       <h2>[User's Name]</h2>
-      <p>Date: [Today’s Date]</p>
-      <p>Time: [Current Time]</p>
+    </div>
+      <div class="welcome-info">
+      <a href="./app/pages/settings/accounts/accounts.html">
+        <button class="settings-button">
+          <img src="./public/img/settings.png" alt="Custom Image" />
+        </button>
+      </a>
     </div>
   </div>
   
@@ -51,33 +56,26 @@
       <img src="./public/img/expand.png" alt="Custom Image" />
     </button>
   </a>
-  <div class="box-roadmap-obsidian"></div>
+  <div class="box-roadmap-obsidian">
+    <div id="obsidianNodes" class="nodes-graph" ></div>
+  </div>
 </div>
 
   
   <!-- Reminders Section -->
-  <div class="reminders-box-chat">
-    <h3>Reminders</h3>
-    <a href="./app/pages/reminders-page/reminders.html">
-      <button class="luma-expand-button">
-        <img src="./public/img/expand.png" alt="Custom Image" />
-      </button>
-    </a>
-    <div class="reminder">Reminder 1</div>
-    <div class="reminder">Reminder 2</div>
-    <div class="reminder">Reminder 3</div>
-    <div class="reminder">Reminder 4</div>
-    <div class="reminder">Reminder 5</div>
+  <!-- Reminders Section -->
+<div class="reminders-box-chat">
+  <h3>Reminders</h3>
+  <div id="reminders-list"></div>
+  <div class="add-reminder">
+    <input id="reminder-input" type="text" placeholder="Add a new reminder..." />
+    <button id="add-reminder-button">Add</button>
   </div>
+</div>
+
 
   <!-- Chat Section -->
   <div class="luma-box-chat">
-    <!-- Image Button in Top Right Corner -->
-    <a href="./app/pages/chat-page/chat.html">
-      <button class="luma-expand-button">
-        <img src="./public/img/expand.png" alt="Custom Image" />
-      </button>
-    </a>
     <h3>Chat with Luma</h3>
     <div class="box-luma-conversation" id="chat-conversation"></div>
     
@@ -95,64 +93,6 @@
       </button>
     </div>
   </div>
-
-  <script>
-    // API endpoint for chat
-    const chatEndpoint = "http://localhost:5000/chat";
-
-    // Elements
-    const chatConversation = document.getElementById("chat-conversation");
-    const chatInput = document.getElementById("chat-input");
-    const sendMessageButton = document.getElementById("send-message-button");
-
-    // Function to append a message to the chat
-    function appendMessage(content, isUser) {
-      const messageElement = document.createElement("div");
-      messageElement.className = isUser ? "user-message" : "ai-message";
-      messageElement.textContent = content;
-      chatConversation.appendChild(messageElement);
-      chatConversation.scrollTop = chatConversation.scrollHeight; // Auto-scroll
-    }
-
-    // Function to send a message to the AI server
-    async function sendMessage() {
-      const message = chatInput.value.trim();
-      if (!message) return;
-
-      // Append user message
-      appendMessage(message, true);
-
-      // Clear input field
-      chatInput.value = "";
-
-      try {
-        // Send message to AI server
-        const response = await fetch(chatEndpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }),
-        });
-        const data = await response.json();
-
-        if (data.response) {
-          // Append AI response
-          appendMessage(data.response, false);
-        } else {
-          appendMessage("Error: No response from AI server.", false);
-        }
-      } catch (error) {
-        appendMessage("Error: Unable to connect to AI server.", false);
-      }
-    }
-
-    // Event listener for the send button
-    sendMessageButton.addEventListener("click", sendMessage);
-
-    // Event listener for pressing Enter in the input box
-    chatInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") sendMessage();
-    });
-  </script>
 
   <!-- Directory Section -->
   <div class="directory hand-drawn-text">
@@ -190,5 +130,222 @@
   </div>
 
   <div class="box footer"></div>
+
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // D3.js Graph Visualization
+      const container = document.getElementById('obsidianNodes');
+      let width = container.clientWidth;
+      let height = container.clientHeight;
+  
+      const svg = d3.select(container)
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+  
+      const nodes = [
+        { id: "Node 1" },
+        { id: "Node 2" },
+        { id: "Node 3" },
+        { id: "Node 4" }
+      ];
+  
+      const links = [
+        { source: "Node 1", target: "Node 2" },
+        { source: "Node 2", target: "Node 3" },
+        { source: "Node 3", target: "Node 4" },
+        { source: "Node 4", target: "Node 1" }
+      ];
+  
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .on("tick", ticked);
+  
+      const link = svg.selectAll(".link")
+        .data(links)
+        .enter()
+        .append("line")
+        .attr("class", "link")
+        .attr("stroke", "#999")
+        .attr("stroke-width", 2);
+  
+      const node = svg.selectAll(".node")
+        .data(nodes)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", 10)
+        .attr("fill", "#69b3a2")
+        .call(drag(simulation));
+  
+      const label = svg.selectAll(".label")
+        .data(nodes)
+        .enter()
+        .append("text")
+        .attr("class", "label")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .text(d => d.id);
+  
+      function ticked() {
+        link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+  
+        node
+          .attr("cx", d => d.x)
+          .attr("cy", d => d.y);
+  
+        label
+          .attr("x", d => d.x)
+          .attr("y", d => d.y);
+      }
+  
+      function drag(simulation) {
+        function dragstarted(event, d) {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        }
+  
+        function dragged(event, d) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
+  
+        function dragended(event, d) {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+  
+        return d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended);
+      }
+  
+      // Resize handler
+      window.addEventListener("resize", () => {
+        // Update container dimensions
+        width = container.clientWidth;
+        height = container.clientHeight;
+  
+        // Update SVG size
+        svg.attr("width", width).attr("height", height);
+  
+        // Update simulation forces
+        simulation.force("center", d3.forceCenter(width / 2, height / 2));
+        simulation.alpha(1).restart();
+      });
+  
+      // Reminders functionality
+      const remindersList = document.getElementById('reminders-list');
+      const reminderInput = document.getElementById('reminder-input');
+      const addReminderButton = document.getElementById('add-reminder-button');
+  
+      // Function to add a reminder
+      function addReminder(text) {
+        const reminder = document.createElement('div');
+        reminder.className = 'reminder';
+  
+        const circle = document.createElement('div');
+        circle.className = 'circle';
+        reminder.appendChild(circle);
+  
+        const reminderText = document.createElement('div');
+        reminderText.className = 'text';
+        reminderText.textContent = text;
+        reminder.appendChild(reminderText);
+  
+        // Add click event to toggle check/uncheck and remove after delay if checked
+        circle.addEventListener('click', () => {
+          if (reminder.classList.contains('checked')) {
+            reminder.classList.remove('checked'); // Uncheck if already checked
+          } else {
+            reminder.classList.add('checked'); // Mark as checked
+            setTimeout(() => {
+              if (reminder.classList.contains('checked')) {
+                remindersList.removeChild(reminder); // Remove after 2 seconds if still checked
+              }
+            }, 2000);
+          }
+        });
+  
+        remindersList.appendChild(reminder);
+      }
+  
+      // Add button click listener
+      addReminderButton.addEventListener('click', () => {
+        const text = reminderInput.value.trim();
+        if (text) {
+          addReminder(text);
+          reminderInput.value = ''; // Clear the input field
+        }
+      });
+  
+      // Add "Enter" key listener for the input field
+      reminderInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          const text = reminderInput.value.trim();
+          if (text) {
+            addReminder(text);
+            reminderInput.value = ''; // Clear the input field
+          }
+        }
+      });
+  
+      // Chat Functionality
+      const chatEndpoint = "http://localhost:5000/chat";
+      const chatConversation = document.getElementById("chat-conversation");
+      const chatInput = document.getElementById("chat-input");
+      const sendMessageButton = document.getElementById("send-message-button");
+  
+      function appendMessage(content, isUser) {
+        const messageElement = document.createElement("div");
+        messageElement.className = isUser ? "user-message" : "ai-message";
+        messageElement.textContent = content;
+        chatConversation.appendChild(messageElement);
+        chatConversation.scrollTop = chatConversation.scrollHeight;
+      }
+  
+      async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+  
+        appendMessage(message, true);
+        chatInput.value = "";
+  
+        try {
+          const response = await fetch(chatEndpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+          const data = await response.json();
+  
+          if (data.response) {
+            appendMessage(data.response, false);
+          } else {
+            appendMessage("Error: No response from AI server.", false);
+          }
+        } catch (error) {
+          appendMessage("Error: Unable to connect to AI server.", false);
+        }
+      }
+  
+      sendMessageButton.addEventListener("click", sendMessage);
+      chatInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") sendMessage();
+      });
+    });
+  </script>
+  
 </body>
 </html>
