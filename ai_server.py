@@ -90,7 +90,23 @@ def fine_tune_model():
         overwrite_output_dir=True,
     )
 
-    # Custom callback class to handle training progress
+    # Custom Trainer class to handle unexpected arguments
+    class CustomTrainer(Trainer):
+        def compute_loss(self, model, inputs, return_outputs=False):
+            # Only pass necessary arguments to the model's forward function
+            inputs = {k: v for k, v in inputs.items() if k in model.forward.__code__.co_varnames}
+            outputs = model(**inputs)
+            loss = outputs.loss
+            return (loss, outputs) if return_outputs else loss
+
+    # Initialize Trainer with CustomTrainer
+    trainer = CustomTrainer(
+        model=model,
+        args=training_args,
+        train_dataset=dataset,
+    )
+
+    # Add custom callback to monitor training progress
     class LogTrainingProgressCallback(TrainerCallback):
         def on_train_begin(self, args, state, control, **kwargs):
             print("Training started...")
@@ -99,14 +115,6 @@ def fine_tune_model():
             if logs:
                 print(f"Training Step {state.global_step} - Loss: {logs.get('loss', 'N/A')}")
 
-    # Initialize Trainer
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=dataset,
-    )
-
-    # Add the custom callback to monitor training progress
     trainer.add_callback(LogTrainingProgressCallback)
 
     # Fine-tune the model

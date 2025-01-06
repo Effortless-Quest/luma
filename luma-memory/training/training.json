@@ -2,5 +2,9 @@
     {
         "user_input": "hi how are you?",
         "ai_response": "I'm doing great how are you?"
+    },
+    {
+        "user_input": "What is my favorite color?",
+        "ai_response": "Your favorite color is blue!"
     }
 ]
