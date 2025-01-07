@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Dashboard</title>
+  <title>Luma | Home</title>
   <link rel="stylesheet" href="./index.css">
 </head>
 <script>
@@ -232,87 +232,57 @@
       });
   
       // Reminders functionality
-      const remindersList = document.getElementById('reminders-list');
-      const reminderInput = document.getElementById('reminder-input');
-      const addReminderButton = document.getElementById('add-reminder-button');
-  
-      function addReminder(text) {
-        const reminder = document.createElement('div');
-        reminder.className = 'reminder';
-  
-        const circle = document.createElement('div');
-        circle.className = 'circle';
-        reminder.appendChild(circle);
-  
-        const reminderText = document.createElement('div');
-        reminderText.className = 'text';
-        reminderText.textContent = text;
-        reminder.appendChild(reminderText);
-  
-        circle.addEventListener('click', () => {
-          if (reminder.classList.contains('checked')) {
-            reminder.classList.remove('checked');
-          } else {
-            reminder.classList.add('checked');
-            setTimeout(() => {
-              if (reminder.classList.contains('checked')) {
-                remindersList.removeChild(reminder);
-              }
-            }, 2000);
-          }
-        });
-  
-        remindersList.appendChild(reminder);
-        saveReminderToFile(text);
-      }
-  
-      async function saveReminderToFile(text) {
-        try {
-          const response = await fetch('http://localhost:5000/save-reminder', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ reminder: text })
-          });
-          if (!response.ok) {
-            console.error('Error saving reminder');
-          }
-        } catch (error) {
-          console.error('Error:', error);
+const remindersList = document.getElementById('reminders-list');
+const reminderInput = document.getElementById('reminder-input');
+const addReminderButton = document.getElementById('add-reminder-button');
+
+function addReminder(text) {
+  const reminder = document.createElement('div');
+  reminder.className = 'reminder';
+
+  const circle = document.createElement('div');
+  circle.className = 'circle';
+  reminder.appendChild(circle);
+
+  const reminderText = document.createElement('div');
+  reminderText.className = 'text';
+  reminderText.textContent = text;
+  reminder.appendChild(reminderText);
+
+  circle.addEventListener('click', () => {
+    if (reminder.classList.contains('checked')) {
+      reminder.classList.remove('checked');
+    } else {
+      reminder.classList.add('checked');
+      setTimeout(() => {
+        if (reminder.classList.contains('checked')) {
+          remindersList.removeChild(reminder);
         }
-      }
-  
-      async function loadReminders() {
-        try {
-          const response = await fetch('http://localhost:5000/load-reminders');
-          const reminders = await response.json();
-          reminders.forEach(reminder => {
-            addReminder(reminder);
-          });
-        } catch (error) {
-          console.error('Error loading reminders:', error);
-        }
-      }
-  
-      loadReminders();
-  
-      addReminderButton.addEventListener('click', () => {
-        const text = reminderInput.value.trim();
-        if (text) {
-          addReminder(text);
-          reminderInput.value = '';
-        }
-      });
-  
-      reminderInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          const text = reminderInput.value.trim();
-          if (text) {
-            addReminder(text);
-            reminderInput.value = '';
-          }
-        }
-      });
-  
+      }, 2000);
+    }
+  });
+
+  remindersList.appendChild(reminder);
+}
+
+addReminderButton.addEventListener('click', () => {
+  const text = reminderInput.value.trim();
+  if (text) {
+    addReminder(text);
+    reminderInput.value = '';
+  }
+});
+
+reminderInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    const text = reminderInput.value.trim();
+    if (text) {
+      addReminder(text);
+      reminderInput.value = '';
+    }
+  }
+});
+
       // Chat Functionality
       const chatEndpoint = "http://localhost:5000/chat";
       const chatConversation = document.getElementById("chat-conversation");

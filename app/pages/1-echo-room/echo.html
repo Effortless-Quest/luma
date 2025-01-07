@@ -52,7 +52,6 @@
         <audio id="audioPlayback" controls style="width: 100%; display: none;"></audio>
       </div>
 
-
       <!-- Square 3 (Folder Finder 2) -->
       <div class="card" style="grid-row: 2; grid-column: 1; background-color: #f2f2f2;">
         <p>Files</p>
@@ -77,7 +76,8 @@
     const { ipcRenderer } = require('electron');
     const fs = require('fs');
     const path = require('path');
-  
+    
+    // File Explorer Variables
     const chooseFolderBtn1 = document.getElementById('chooseFolderBtn1');
     const chooseFolderBtn2 = document.getElementById('chooseFolderBtn2');
     const folder1Content = document.getElementById('folder1Content');
@@ -87,71 +87,70 @@
     const backBtn1 = document.getElementById('backBtn1');
     const backBtn2 = document.getElementById('backBtn2');
     const fileEditor = document.getElementById('fileEditor');
-    const saveFileBtn = document.getElementById('saveFileBtn');
-  
+    
     let currentDirectory1 = null;
     let currentDirectory2 = null;
     let currentFilePath = null;
-  
+    
     // Global variable to keep track of the last saved content to prevent excessive saves
     let lastSavedContent = '';
-  
+    
     // Audio Recording Variables
     let mediaRecorder;
     let audioChunks = [];
+    let recorderInitialized = false; // Track whether the recorder has been initialized
     const startBtn = document.getElementById('startRecordingBtn');
     const pauseBtn = document.getElementById('pauseRecordingBtn');
     const stopBtn = document.getElementById('stopRecordingBtn');
     const recordingStatus = document.getElementById('recordingStatus');
-    const audioPlayback = document.getElementById('audioPlayback');
-  
+    
     // Load Directory Function (shared by both Square 1 and Square 3)
     function loadDirectory(directoryPath, fileExplorer, backButton, isFolder1) {
       if (!directoryPath) {
         alert('No folder selected. Please choose a folder first.');
         return;
       }
-  
+    
       fs.readdir(directoryPath, { withFileTypes: true }, (err, files) => {
         if (err) {
           alert('Error reading directory: ' + err.message);
           return;
         }
-  
+    
         fileExplorer.innerHTML = '';
-        files.forEach(file => {
+        files.forEach((file) => {
           const filePath = path.join(directoryPath, file.name);
           const fileElement = document.createElement('div');
           const fileText = document.createElement('span');
           fileText.textContent = file.name;
-  
+    
           fileElement.classList.add('file-item');
           fileElement.classList.add(file.isDirectory() ? 'folder' : 'file');
           fileElement.appendChild(fileText);
-  
+    
           fileElement.addEventListener('click', () => {
             if (file.isDirectory()) {
-              loadDirectory(filePath, fileExplorer, backButton, isFolder1);  // Navigate into the folder
+              loadDirectory(filePath, fileExplorer, backButton, isFolder1); // Navigate into the folder
             } else {
               currentFilePath = filePath;
               loadFileToEditor(filePath);
             }
           });
-  
+    
           fileExplorer.appendChild(fileElement);
         });
-  
+    
         // Show back button when we are inside a folder
         backButton.style.display = directoryPath !== '/' ? 'block' : 'none';
-  
+    
         if (isFolder1) {
-          currentDirectory1 = directoryPath;  // Store the directory path for folder 1
+          currentDirectory1 = directoryPath; // Store the directory path for folder 1
         } else {
-          currentDirectory2 = directoryPath;  // Store the directory path for folder 2
+          currentDirectory2 = directoryPath; // Store the directory path for folder 2
         }
       });
     }
-  
+    
     // Load the selected file into the editor
     function loadFileToEditor(filePath) {
       fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -163,7 +162,7 @@
         lastSavedContent = data; // Store the current content as the last saved content
       });
     }
-  
+    
     // Autosave function to save the file
     function autoSave() {
       if (currentFilePath && fileEditor.value !== lastSavedContent) {
@@ -177,67 +176,73 @@
         });
       }
     }
-  
+    
     // Debounced autosave: Only save if user is idle for 1 second
     let autoSaveTimeout;
     fileEditor.addEventListener('input', () => {
       clearTimeout(autoSaveTimeout);
       autoSaveTimeout = setTimeout(autoSave, 1000); // Save after 1 second of inactivity
     });
-  
+    
     // Back button functionality
     backBtn1.addEventListener('click', () => {
       const parentDir = path.dirname(currentDirectory1);
       loadDirectory(parentDir, fileExplorer1, backBtn1, true);
     });
-  
+    
     backBtn2.addEventListener('click', () => {
       const parentDir = path.dirname(currentDirectory2);
       loadDirectory(parentDir, fileExplorer2, backBtn2, false);
     });
-  
+    
     chooseFolderBtn1.addEventListener('click', () => {
-      ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
-        if (folderPath) {
-          folder1Content.style.display = 'block';
-          loadDirectory(folderPath, fileExplorer1, backBtn1, true);
-        }
-      }).catch((err) => {
-        alert('Error selecting folder: ' + err.message);
-      });
+      ipcRenderer
+        .invoke('dialog:openDirectory')
+        .then((folderPath) => {
+          if (folderPath) {
+            folder1Content.style.display = 'block';
+            loadDirectory(folderPath, fileExplorer1, backBtn1, true);
+          }
+        })
+        .catch((err) => {
+          alert('Error selecting folder: ' + err.message);
+        });
     });
-  
+    
     chooseFolderBtn2.addEventListener('click', () => {
-      ipcRenderer.invoke('dialog:openDirectory').then((folderPath) => {
-        if (folderPath) {
-          folder2Content.style.display = 'block';
-          loadDirectory(folderPath, fileExplorer2, backBtn2, false);
-        }
-      }).catch((err) => {
-        alert('Error selecting folder: ' + err.message);
-      });
+      ipcRenderer
+        .invoke('dialog:openDirectory')
+        .then((folderPath) => {
+          if (folderPath) {
+            folder2Content.style.display = 'block';
+            loadDirectory(folderPath, fileExplorer2, backBtn2, false);
+          }
+        })
+        .catch((err) => {
+          alert('Error selecting folder: ' + err.message);
+        });
     });
-  
+    
     // Audio Recording Logic
     async function initRecorder() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
-  
+    
         mediaRecorder.ondataavailable = (event) => {
           audioChunks.push(event.data);
         };
-  
+    
         mediaRecorder.onstop = async () => {
           const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
           const buffer = Buffer.from(await audioBlob.arrayBuffer());
-  
+    
           const { filePath } = await ipcRenderer.invoke('dialog:saveFile', {
             title: 'Save Audio Recording',
             defaultPath: 'recording.webm',
             filters: [{ name: 'Audio Files', extensions: ['webm'] }],
           });
-  
+    
           if (filePath) {
             fs.writeFile(filePath, buffer, (err) => {
               if (err) {
@@ -248,16 +253,24 @@
               }
             });
           }
-  
+    
           // Reset chunks for the next recording
           audioChunks = [];
+    
+          // Stop the microphone stream
+          stream.getTracks().forEach((track) => track.stop());
         };
+    
+        recorderInitialized = true; // Mark recorder as initialized
       } catch (err) {
         alert('Error accessing microphone: ' + err.message);
       }
     }
-  
-    startBtn.addEventListener('click', () => {
+    
+    startBtn.addEventListener('click', async () => {
+      if (!recorderInitialized) {
+        await initRecorder(); // Initialize the recorder only when needed
+      }
       if (!mediaRecorder) {
         alert('Audio Recorder not initialized.');
         return;
@@ -268,7 +281,7 @@
       stopBtn.disabled = false;
       recordingStatus.textContent = 'Status: Recording...';
     });
-  
+    
     pauseBtn.addEventListener('click', () => {
       if (mediaRecorder.state === 'recording') {
         mediaRecorder.pause();
@@ -280,7 +293,7 @@
         recordingStatus.textContent = 'Status: Recording...';
       }
     });
-  
+    
     stopBtn.addEventListener('click', () => {
       mediaRecorder.stop();
       startBtn.disabled = false;
@@ -289,9 +302,6 @@
       pauseBtn.textContent = 'Pause Recording';
       recordingStatus.textContent = 'Status: Idle';
     });
-  
-    // Initialize recorder when the page loads
-    initRecorder();
   </script>
 </body>
 </html>
