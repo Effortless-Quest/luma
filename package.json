@@ -30,7 +30,6 @@
   "productName": "Luma",
   "files": [
     "app/**/*",
-    "app/dist/ai_server.exe",
     "node_modules/**/*",
     "package.json"
   ],
