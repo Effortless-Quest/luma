@@ -24,33 +24,31 @@
     "electron-updater": "^6.3.9"
   },
   "build": {
-    "appId": "com.luma.app",
-    "productName": "Luma",
-    "files": [
-      "app/**/*",
-      "dist/**/*",
-      "node_modules/**/*",
-      "package.json"
+  "appId": "com.luma.app",
+  "productName": "Luma",
+  "files": [
+    "app/**/*",
+    "dist/**/*",
+    "node_modules/**/*",
+    "package.json"
+  ],
+  "directories": {
+    "output": "release"  
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      }
     ],
-    "directories": {
-      "output": "release"
-    },
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ],
-      "artifactName": "${productName}-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "artifactName": "${productName}-Setup-${version}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true
   }
+}
+
 }
