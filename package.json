@@ -29,6 +29,7 @@
     "productName": "Luma",
     "files": [
       "app/**/*",
+      "dist/**/*",
       "node_modules/**/*",
       "package.json",
       "app/ai_server.py",
