@@ -4,17 +4,18 @@
   "description": "Luma Electron App",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  },  "scripts": {
+  },
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"electron app/java/main.js\" \"app\\dist\\ai_server.exe\"",
-    "build": "electron-builder"
+    "build": "electron-builder --win --publish never"
   },
   "keywords": [],
   "author": "Elif Cakmak",
   "license": "Non-Commercial Redistribution License",
   "devDependencies": {
     "concurrently": "^9.1.1",
-    "electron": "^33.2.1",
+    "electron": "^24.8.8",
     "electron-builder": "^25.1.8",
     "electron-reload": "^2.0.0-alpha.1"
   },
@@ -35,14 +36,21 @@
       "output": "release"
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "effortless-quest",
-        "repo": "luma"
-      }
-    ]
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
