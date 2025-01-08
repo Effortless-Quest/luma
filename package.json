@@ -30,15 +30,9 @@
   "productName": "Luma",
   "files": [
     "app/**/*",
+    "app/dist/ai_server.exe",
     "node_modules/**/*",
     "package.json"
-  ],
-  "extraFiles": [
-    {
-      "from": "app/dist",
-      "to": "app/dist",
-      "filter": ["**/*"]
-    }
   ],
   "directories": {
     "output": "release"
