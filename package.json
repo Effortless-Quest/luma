@@ -26,34 +26,40 @@
     "electron-updater": "^6.3.9"
   },
   "build": {
-    "appId": "com.luma.app",
-    "productName": "Luma",
-    "files": [
-      "app/**/*",
-      "app/dist/**/*",
-      "node_modules/**/*",
-      "package.json"
+  "appId": "com.luma.app",
+  "productName": "Luma",
+  "files": [
+    "app/**/*",
+    "node_modules/**/*",
+    "package.json"
+  ],
+  "extraFiles": [
+    {
+      "from": "app/dist",
+      "to": "dist",
+      "filter": ["**/*"]
+    }
+  ],
+  "directories": {
+    "output": "release"
+  },
+  "win": {
+    "target": [
+      "nsis"
     ],
-    "directories": {
-      "output": "release"
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "artifactName": "${productName}-Setup-${version}.${ext}"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "Effortless-Quest",
-        "repo": "Luma"
-      }
-    ]
-  }
+    "artifactName": "${productName}-Setup-${version}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "Effortless-Quest",
+      "repo": "Luma"
+    }
+  ]
+}
 }
