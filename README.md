@@ -2,6 +2,7 @@
 
 You can download the latest version of Luma from the release below:
 
-[Download Luma v1.0.0](https://github.com/effortless-quest/luma/releases/tag/v1.0.0)
+[Download Luma v1.0.0 .exe](https://github.com/effortless-quest/luma/releases/download/v1.0.0/your-app.exe)
+
 
 Alternatively, you can download the `.exe` directly from the release assets once you navigate to the linked page.
