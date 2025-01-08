@@ -1,7 +1,7 @@
 # Node modules
 /node_modules/
 
-# TypeScript build directory
+# ai server output (dist folder)
 /dist/
 
 # Electron log files
@@ -21,9 +21,6 @@ yarn-error.log*
 
 # Compiled JavaScript files (if using TypeScript)
 /src/**/*.js
-
-# Optional: Ignore compiled TypeScript files in the dist folder
-/dist/**/*.js
 
 # Ignore virtual environment directory
 /python-env/venv/

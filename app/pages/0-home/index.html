@@ -31,7 +31,7 @@
   <div class="box-header">
     <div class="profile-icon">
       <!-- Placeholder for the profile image -->
-      <img id="profileImage" src="./public/img/youu.png" alt="Profile Icon" />
+      <img id="profileImage" src="../../assets/images/youu.png" alt="Profile Icon" />
       <input type="file" id="imageUpload" accept="image/*" style="display: none;" />
     </div>
     <div class="welcome-info">
@@ -39,9 +39,9 @@
       <h2>[User's Name]</h2>
     </div>
     <div class="welcome-info">
-      <a href="./app/pages/settings/accounts/accounts.html">
+      <a href="../settings/accounts/accounts.html">
         <button class="settings-button">
-          <img src="./public/img/settings.png" alt="Custom Image" />
+          <img src="../../assets/images/settings.png" alt="Custom Image" />
         </button>
       </a>
     </div>
@@ -50,9 +50,9 @@
   <!-- Road Map Section -->
   <div class="box-roadmap">
     <h3>Road Map</h3>
-    <a href="./app/pages/2-roadmap-page/roadmap.html">
+    <a href="../2-roadmap-page/roadmap.html">
       <button class="expand-button">
-        <img src="./public/img/expand.png" alt="Custom Image" />
+        <img src="../../assets/images/expand.png" alt="Custom Image" />
       </button>
     </a>
     <div class="box-roadmap-obsidian">
@@ -80,36 +80,36 @@
     <div class="chat-input-container">
       <input class="luma-box-chat-input" id="chat-input" type="text" placeholder="Type a message..." />
       <button class="send-message-button" id="send-message-button">
-        <img src="./public/img/sendbutton.png" alt="Send Message" />
+        <img src="../../assets/images/sendbutton.png" alt="Send Message" />
       </button>
     </div>
   </div>
 <!-- Directory Section -->
    <div class="directory hand-drawn-text">
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/1-echo-room/echo.html')">Echo Room</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/2-roadmap-page/roadmap.html')">RoadMap</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/3-inventions-page/inventions.html')">Invention Center</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/4-concept-lab/concept.html')">Concept Lab</button>
-    <button class="directory-settings" onclick="navigateToPage('./app/pages/5-education-center/education.html')">Education Center</button>  
+    <button class="directory-settings" onclick="navigateToPage('../1-echo-room/echo.html')">Echo Room</button>
+    <button class="directory-settings" onclick="navigateToPage('../2-roadmap-page/roadmap.html')">RoadMap</button>
+    <button class="directory-settings" onclick="navigateToPage('../3-inventions-page/inventions.html')">Invention Center</button>
+    <button class="directory-settings" onclick="navigateToPage('../4-concept-lab/concept.html')">Concept Lab</button>
+    <button class="directory-settings" onclick="navigateToPage('../5-education-center/education.html')">Education Center</button>  
 
   <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/')">
     <button class="directory-r">
-      <img src="./public/img/elif.png" alt="Custom Image" />
+      <img src="../../assets/images/elif.png" alt="Custom Image" />
     </button>
   </a>
   <a href="#" onclick="openBrowserView('https://www.elifcakmak.blog/2/videos')">
     <button class="directory-resources">
-      <img src="./public/img/easyflowmedia.png" alt="Custom Image" />
+      <img src="../../assets/images/easyflowmedia.png" alt="Custom Image" />
     </button>
   </a>
   <a href="#" onclick="openBrowserView('https://www.effortlessworks.store/')">
     <button class="directory-resources">
-      <img src="./public/img/effortlessworks.png" alt="Custom Image" />
+      <img src="../../assets/images/effortlessworks.png" alt="Custom Image" />
     </button>
   </a>
   <a href="#" onclick="openBrowserView('https://www.effortless.quest/')">
     <button class="directory-resources">
-      <img src="./public/img/effortlessquest.png" alt="Custom Image" />
+      <img src="../../assets/images/effortlessquest.png" alt="Custom Image" />
     </button>
   </a>
 </div>
@@ -284,7 +284,7 @@ reminderInput.addEventListener('keydown', (event) => {
 });
 
       // Chat Functionality
-      const chatEndpoint = "http://localhost:5000/chat";
+      const chatEndpoint = "http://127.0.0.1:5000/chat";
       const chatConversation = document.getElementById("chat-conversation");
       const chatInput = document.getElementById("chat-input");
       const sendMessageButton = document.getElementById("send-message-button");

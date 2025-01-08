@@ -3,7 +3,7 @@
 /* Adding custom font 'Virgil' */
 @font-face {
   font-family: 'Virgil';
-  src: url('../../../assets/fonts/Virgil-Regular.woff2') format('woff2');
+  src: url('../assets/fonts/Virgil-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }

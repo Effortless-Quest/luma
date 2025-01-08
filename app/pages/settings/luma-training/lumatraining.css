@@ -18,7 +18,6 @@ body {
   width: 35px;
 }
 
-/* Settings Container */
 .settings-container {
   width: 90%;
   height: 90vh;
@@ -49,20 +48,15 @@ header h1 {
   background: none;
 }
 
-/* Settings Content Layout */
 .settings-content {
   display: flex;
-  gap: 20px;
 }
 
-/* Sidebar Styling */
 .sidebar {
-  width: 200px;
+  width: 150px;
   border-right: 1px solid #ccc;
   background-color: #f9f9f9;
   height: 85vh;
-  padding: 20px;
-  border-radius: 8px;
 }
 
 .sidebar ul {
@@ -86,75 +80,49 @@ header h1 {
   background-color: #e0e0e0;
 }
 
-.sidebar a {
-  font-weight: bold;
-  font-size: 1rem;
-}
-
 .main-content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.main-content h2 {
-  font-size: 2rem;
-  color: #0073e6;
+.account-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-/* Form Styling */
-form {
+.account-section div {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
 }
 
-form div {
-  display: flex;
-  flex-direction: column;
+.account-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
-label {
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-
-textarea {
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: vertical;
-  min-height: 100px;
-}
-
-textarea:focus {
-  border-color: #0073e6;
-  outline: none;
-}
-
-button {
-  padding: 12px 20px;
-  background-color: #0073e6;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #005bb5;
-}
-
-/* Buttons inside sections */
 .buttons {
   text-align: right;
   margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007BFF; /* Blue color */
+  color: white; /* White text */
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue when hovered */
 }
 
 .save-button {
@@ -180,18 +148,33 @@ button:hover {
   padding: 5px 15px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .settings-content {
-    flex-direction: column;
-  }
+.floating-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 90%;
+  height: 150px;
+  margin: 20px auto;
+}
 
-  .sidebar {
-    width: 100%;
-    margin-bottom: 20px;
-  }
+.floating-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
 
-  .main-content {
-    width: 100%;
-  }
+textarea {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: none;
+  height: 100px;
+}
+
+textarea:focus {
+  border-color: #007BFF;
+  outline: none;
 }
