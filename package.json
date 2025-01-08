@@ -10,8 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "build": "electron-builder --win --publish never",
-    "package": "electron-builder --dir",
-    "make": "electron-builder --win"
+    "package": "electron-builder --dir"
   },
   "keywords": [],
   "author": "Elif Cakmak",
@@ -31,7 +30,8 @@
   "files": [
     "app/**/*",
     "node_modules/**/*",
-    "package.json"
+    "package.json",
+    "app/ai_server.py"
   ],
   "directories": {
     "output": "release"
