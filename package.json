@@ -1,22 +1,24 @@
 {
-  "name": "@effortless-quest/luma",
-  "version": "1.0.1",
+  "name": "luma",
+  "version": "0.0.0",
+  "main": "app/java/main.js",
   "description": "Luma Electron App",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"electron app/java/main.js\" \"app\\dist\\ai_server.exe\"",
-    "build": "electron-builder --win --publish never"
+    "start": "electron .",
+    "build": "electron-builder --win --publish never",
+    "package": "electron-builder --dir",
+    "make": "electron-builder --win"
   },
   "keywords": [],
   "author": "Elif Cakmak",
   "license": "Non-Commercial Redistribution License",
   "devDependencies": {
-    "concurrently": "^9.1.1",
     "electron": "^24.8.8",
-    "electron-builder": "^25.1.8",
+    "electron-builder": "^24.13.3",
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {
@@ -24,31 +26,34 @@
     "electron-updater": "^6.3.9"
   },
   "build": {
-  "appId": "com.luma.app",
-  "productName": "Luma",
-  "files": [
-    "app/**/*",
-    "dist/**/*",
-    "node_modules/**/*",
-    "package.json"
-  ],
-  "directories": {
-    "output": "release"  
-  },
-  "win": {
-    "target": [
-      {
-        "target": "nsis",
-        "arch": ["x64", "ia32"]
-      }
+    "appId": "com.luma.app",
+    "productName": "Luma",
+    "files": [
+      "app/**/*",
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
     ],
-    "artifactName": "${productName}-Setup-${version}.${ext}"
-  },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Effortless-Quest",
+        "repo": "Luma"
+      }
+    ]
   }
-}
-
 }
