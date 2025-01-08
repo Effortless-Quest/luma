@@ -1,8 +1,7 @@
 # Node modules
 /node_modules/
 
-# ai server output (dist folder)
-/dist/
+
 
 # Electron log files
 *.log
