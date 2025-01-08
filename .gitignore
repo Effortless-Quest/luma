@@ -1,7 +1,7 @@
 # Node modules
 /node_modules/
 
-
+/release/
 
 # Electron log files
 *.log
@@ -23,3 +23,5 @@ yarn-error.log*
 
 # Ignore virtual environment directory
 /python-env/venv/
+
+.github
