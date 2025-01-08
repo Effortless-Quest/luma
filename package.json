@@ -13,7 +13,7 @@
     "package": "electron-builder --dir"
   },
   "keywords": [],
-  "author": "Elif Cakmak",
+  "author": "Effortles Quest",
   "license": "Non-Commercial Redistribution License",
   "devDependencies": {
     "electron": "^24.8.8",
@@ -25,34 +25,38 @@
     "electron-updater": "^6.3.9"
   },
   "build": {
-  "appId": "com.luma.app",
-  "productName": "Luma",
-  "files": [
-    "app/**/*",
-    "node_modules/**/*",
-    "package.json",
-    "app/ai_server.py"
-  ],
-  "directories": {
-    "output": "release"
-  },
-  "win": {
-    "target": [
-      "nsis"
+    "appId": "com.luma.app",
+    "productName": "Luma",
+    "files": [
+      "app/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "app/ai_server.py",
+      {
+        "from": "app/dist/ai_server.exe",
+        "to": "app/dist/ai_server.exe"
+      }
     ],
-    "artifactName": "${productName}-Setup-${version}.${ext}"
-  },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": true
-  },
-  "publish": [
-    {
-      "provider": "github",
-      "owner": "Effortless-Quest",
-      "repo": "Luma"
-    }
-  ]
-}
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Effortless-Quest",
+        "repo": "Luma"
+      }
+    ]
+  }
 }
