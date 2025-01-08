@@ -31,12 +31,7 @@
       "app/**/*",
       "dist/**/*",
       "node_modules/**/*",
-      "package.json",
-      "app/ai_server.py",
-      {
-        "from": "app/dist/ai_server.exe",
-        "to": "app/dist/ai_server.exe"
-      }
+      "package.json"
     ],
     "directories": {
       "output": "release"
