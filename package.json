@@ -36,7 +36,7 @@
   "extraFiles": [
     {
       "from": "app/dist",
-      "to": "dist",
+      "to": "app/dist",
       "filter": ["**/*"]
     }
   ],
