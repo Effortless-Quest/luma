@@ -72,10 +72,12 @@ function createEditorWindow() {
 }
 
 function startAiServer() {
-    const pythonScript = path.join(__dirname, '..', 'ai_server.py');  // Path to ai_server.py
-    const command = `python "${pythonScript}"`;  // Run the Python script using the global Python
+    const isPackaged = app.isPackaged;
+    const aiServerPath = isPackaged
+        ? path.join(process.resourcesPath, 'app', 'dist', 'ai_server.exe')  // Adjusted for packaged app
+        : path.join(__dirname, 'app', 'dist', 'ai_server.exe');  // Adjusted for development
 
-    exec(command, (error, stdout, stderr) => {
+    const serverProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error starting AI server: ${error.message}`);
             return;
@@ -84,12 +86,36 @@ function startAiServer() {
             console.error(`stderr: ${stderr}`);
             return;
         }
-        console.log(`stdout: ${stdout}`);
+        console.log(`AI server stdout: ${stdout}`);
+    });
+
+    serverProcess.on('close', (code) => {
+        console.log(`AI server exited with code ${code}`);
+    });
+}
+
+
+
+function startPythonServer() {
+    const pythonScript = path.join(__dirname, '..', 'ai_server.py');  // Path to ai_server.py
+    const command = `python "${pythonScript}"`;  // Run the Python script using the global Python
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error starting Python server: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`Python server stdout: ${stdout}`);
     });
 }
 
 app.whenReady().then(() => {
-    startAiServer();  // Start the Python server when Electron app is ready
+    startAiServer();  // Start the AI server executable
+    startPythonServer();  // Start the Python server
     createWindow();    // Load the main window
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

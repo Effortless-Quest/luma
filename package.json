@@ -5,7 +5,7 @@
   "main": "app/java/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"electron app/java/main.js\" \"dist\\ai_server.exe\"",
+    "start": "concurrently \"electron app/java/main.js\" \"app\\dist\\ai_server.exe\"",
     "build": "electron-builder"
   },
   "keywords": [],
@@ -32,6 +32,9 @@
     ],
     "directories": {
       "output": "release"
+    },
+    "win": {
+      "target": "nsis"
     },
     "publish": [
       {
