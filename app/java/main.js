@@ -40,12 +40,22 @@ function createWindow() {
     // Check for updates
     autoUpdater.checkForUpdatesAndNotify();
 
-    autoUpdater.on("update-available", () => {
-        mainWindow.webContents.send("update_available");
+    autoUpdater.on('update-available', () => {
+        dialog.showMessageBox(mainWindow, {
+            type: 'info',
+            title: 'Update Available',
+            message: 'A new version of the app is available. It will be downloaded in the background.',
+        });
     });
 
     autoUpdater.on("update-downloaded", () => {
-        mainWindow.webContents.send("update_downloaded");
+        dialog.showMessageBox(mainWindow, {
+            type: 'info',
+            title: 'Update Ready',
+            message: 'A new version has been downloaded. The app will now restart to apply the update.',
+        }).then(() => {
+            autoUpdater.quitAndInstall();
+        });
     });
 }
 
@@ -93,8 +103,6 @@ function startAiServer() {
         console.log(`AI server exited with code ${code}`);
     });
 }
-
-
 
 function startPythonServer() {
     const pythonScript = path.join(__dirname, '..', 'ai_server.py');  // Path to ai_server.py

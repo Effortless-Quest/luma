@@ -1,6 +1,6 @@
 {
   "name": "@effortless-quest/luma",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Luma Electron App",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
