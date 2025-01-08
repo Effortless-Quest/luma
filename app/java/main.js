@@ -4,10 +4,17 @@ const { autoUpdater } = require("electron-updater");
 const { exec } = require('child_process');
 const path = require('path');
 
-// Enable live reload
-require('electron-reload')(path.join(__dirname, '../../'), {
-    electron: path.join(__dirname, '../../node_modules/.bin/electron'),
-});
+if (process.env.NODE_ENV === 'development') {
+    // Enable live reload only in development
+    try {
+        require('electron-reload')(path.join(__dirname, '../../'), {
+            electron: path.join(__dirname, '../../node_modules/.bin/electron'),
+        });
+        console.log("Electron reload enabled for development.");
+    } catch (err) {
+        console.error("Failed to load electron-reload:", err);
+    }
+}
 
 console.log("Current working directory:", process.cwd());
 
