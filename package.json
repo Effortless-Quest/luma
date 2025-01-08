@@ -2,8 +2,9 @@
   "name": "@effortless-quest/luma",
   "version": "1.0.0",
   "description": "Luma Electron App",
-  "main": "app/java/main.js",
-  "scripts": {
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"electron app/java/main.js\" \"app\\dist\\ai_server.exe\"",
     "build": "electron-builder"
