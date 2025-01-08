@@ -30,7 +30,7 @@
     "productName": "Luma",
     "files": [
       "app/**/*",
-      "dist/**/*",
+      "app/dist/**/*",
       "node_modules/**/*",
       "package.json"
     ],
