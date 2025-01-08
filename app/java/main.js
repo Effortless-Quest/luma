@@ -1,5 +1,6 @@
 "use strict";
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { autoUpdater } = require("electron-updater");
 const { exec } = require('child_process');
 const path = require('path');
 
@@ -28,6 +29,17 @@ function createWindow() {
 
     // Load the index.html page for the main window
     mainWindow.loadFile(path.join(__dirname, '../pages/0-home/index.html'));  // Corrected path to index.html
+
+    // Check for updates
+    autoUpdater.checkForUpdatesAndNotify();
+
+    autoUpdater.on("update-available", () => {
+        mainWindow.webContents.send("update_available");
+    });
+
+    autoUpdater.on("update-downloaded", () => {
+        mainWindow.webContents.send("update_downloaded");
+    });
 }
 
 function createEditorWindow() {
@@ -119,4 +131,9 @@ ipcMain.handle('dialog:openDirectory', async () => {
         return result.filePaths[0];
     }
     return null;
+});
+
+// Handle update events from renderer
+ipcMain.on("restart_app", () => {
+    autoUpdater.quitAndInstall();
 });
