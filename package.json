@@ -1,5 +1,5 @@
 {
-  "name": "luma",
+  "name": "@effortless-quest/luma",
   "version": "1.0.0",
   "description": "Luma Electron App",
   "main": "app/java/main.js",
@@ -39,7 +39,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "Effortless-Quest",
+        "owner": "effortless-quest",
         "repo": "luma"
       }
     ]

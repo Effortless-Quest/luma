@@ -25,3 +25,5 @@ yarn-error.log*
 /python-env/venv/
 
 .github
+
+.npmrc
