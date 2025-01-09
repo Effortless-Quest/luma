@@ -26,12 +26,29 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Create GitHub Release
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }} # Your Personal Access Token
+
       # Package Electron app
       - name: Build Electron app
-        run: npm run build
-
-      # Publish to GitHub Releases
-      - name: Publish release
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: npm run build
+
+      # Upload release assets to GitHub
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/Luma-Setup-${{ github.ref_name }}.exe
+          asset_name: Luma-Setup-${{ github.ref_name }}.exe
+          asset_content_type: application/octet-stream
