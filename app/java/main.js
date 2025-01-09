@@ -84,7 +84,7 @@ function createEditorWindow() {
 function startAiServer() {
     const isPackaged = app.isPackaged;
     const aiServerPath = isPackaged
-        ? path.join(process.resourcesPath, '..', 'dist', 'ai_server.exe')  // Adjusted for packaged app
+        ? path.join(process.resourcesPath, 'ai_server.exe')  // Adjusted for packaged app
         : path.join(__dirname, '..', 'dist', 'ai_server.exe');  // Adjusted for development
 
     const serverProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {

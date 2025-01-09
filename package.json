@@ -33,6 +33,12 @@
       "node_modules/**/*",
       "package.json"
     ],
+    "extraResources": [
+      {
+        "from": "app/dist/ai_server.exe",
+        "to": "ai_server.exe"
+      }
+    ],
     "directories": {
       "output": "release"
     },
