@@ -42,6 +42,7 @@ function createWindow() {
     autoUpdater.checkForUpdatesAndNotify();
 
     autoUpdater.on('update-available', () => {
+        console.log("Update available!");
         dialog.showMessageBox(mainWindow, {
             type: 'info',
             title: 'Update Available',
@@ -49,7 +50,22 @@ function createWindow() {
         });
     });
 
+    autoUpdater.on("update-not-available", () => {
+        console.log("Update not available.");
+      });
+
+    autoUpdater.on("error", (error) => {
+    console.error("Error during update:", error);
+    });
+
+    autoUpdater.on("download-progress", (progressObj) => {
+    console.log(
+        `Downloaded ${progressObj.percent.toFixed(2)}%`
+    );
+    });
+
     autoUpdater.on("update-downloaded", () => {
+        console.log("Update downloaded; will install on restart.");
         dialog.showMessageBox(mainWindow, {
             type: 'info',
             title: 'Update Ready',
@@ -58,6 +74,10 @@ function createWindow() {
             autoUpdater.quitAndInstall();
         });
     });
+
+    app.on("ready", () => {
+        autoUpdater.checkForUpdatesAndNotify();
+      });
 }
 
 function createEditorWindow() {

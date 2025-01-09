@@ -3,13 +3,10 @@
   "version": "0.0.2",
   "main": "app/java/main.js",
   "description": "Luma Electron App",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build": "electron-builder --win --publish never",
+    "build": "electron-builder --win --publish always",
     "package": "electron-builder --dir"
   },
   "keywords": [],
@@ -57,8 +54,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "Effortless-Quest",
-        "repo": "Luma"
+        "owner": "effortless-quest",
+        "repo": "luma"
       }
     ]
   }
