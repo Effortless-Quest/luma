@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'development') {
     // Enable live reload only in development
     try {
         require('electron-reload')(path.join(__dirname, '../../'), {
-            electron: path.join(__dirname, '../../node_modules/.bin/electron'),
+            electron: path.join(__dirname, '../assets/images/luma-app.png'),
         });
         console.log("Electron reload enabled for development.");
     } catch (err) {
@@ -28,6 +28,7 @@ function createWindow() {
         height: 800,
         minWidth: 800,
         minHeight: 580,
+        icon: path.join(__dirname, '../assets/icons/app-logo.png'),
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,

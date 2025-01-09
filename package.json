@@ -13,7 +13,7 @@
     "package": "electron-builder --dir"
   },
   "keywords": [],
-  "author": "Effortles Quest",
+  "author": "Effortless Quest",
   "license": "Non-Commercial Redistribution License",
   "devDependencies": {
     "electron": "^24.8.8",
@@ -46,7 +46,8 @@
       "target": [
         "nsis"
       ],
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "icon": "app/assets/images/luma-app.ico"
     },
     "nsis": {
       "oneClick": false,
