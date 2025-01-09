@@ -43,7 +43,7 @@
       "target": [
         "nsis"
       ],
-      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "artifactName": "Luma-v${version}-Setup.${ext}",
       "icon": "app/assets/images/luma-app.ico"
     },
     "nsis": {
@@ -55,7 +55,8 @@
       {
         "provider": "github",
         "owner": "effortless-quest",
-        "repo": "luma"
+        "repo": "luma",
+        "releaseType": "release"
       }
     ]
   }

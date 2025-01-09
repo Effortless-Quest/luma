@@ -1,7 +1,7 @@
 "use strict";
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const { autoUpdater } = require("electron-updater");
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const path = require('path');
 
 if (process.env.NODE_ENV === 'development') {
@@ -20,6 +20,7 @@ console.log("Current working directory:", process.cwd());
 
 let mainWindow;
 let editorWindow;
+let aiServerProcess; // Store the reference to the AI server process
 
 function createWindow() {
     // Create main window (index.html)
@@ -52,16 +53,14 @@ function createWindow() {
 
     autoUpdater.on("update-not-available", () => {
         console.log("Update not available.");
-      });
+    });
 
     autoUpdater.on("error", (error) => {
-    console.error("Error during update:", error);
+        console.error("Error during update:", error);
     });
 
     autoUpdater.on("download-progress", (progressObj) => {
-    console.log(
-        `Downloaded ${progressObj.percent.toFixed(2)}%`
-    );
+        console.log(`Downloaded ${progressObj.percent.toFixed(2)}%`);
     });
 
     autoUpdater.on("update-downloaded", () => {
@@ -77,7 +76,7 @@ function createWindow() {
 
     app.on("ready", () => {
         autoUpdater.checkForUpdatesAndNotify();
-      });
+    });
 }
 
 function createEditorWindow() {
@@ -108,7 +107,7 @@ function startAiServer() {
         ? path.join(process.resourcesPath, 'ai_server.exe')  // Adjusted for packaged app
         : path.join(__dirname, '..', 'dist', 'ai_server.exe');  // Adjusted for development
 
-    const serverProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {
+    aiServerProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error starting AI server: ${error.message}`);
             return;
@@ -120,31 +119,21 @@ function startAiServer() {
         console.log(`AI server stdout: ${stdout}`);
     });
 
-    serverProcess.on('close', (code) => {
+    aiServerProcess.on('close', (code) => {
         console.log(`AI server exited with code ${code}`);
     });
 }
 
-function startPythonServer() {
-    const pythonScript = path.join(__dirname, '..', 'ai_server.py');  // Path to ai_server.py
-    const command = `python "${pythonScript}"`;  // Run the Python script using the global Python
-
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error starting Python server: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`Python server stdout: ${stdout}`);
-    });
+function stopAiServer() {
+    if (aiServerProcess) {
+        aiServerProcess.kill(); // Gracefully terminate the AI server process
+        console.log("AI server process terminated.");
+        aiServerProcess = null;
+    }
 }
 
 app.whenReady().then(() => {
     startAiServer();  // Start the AI server executable
-    startPythonServer();  // Start the Python server
     createWindow();    // Load the main window
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
@@ -154,7 +143,14 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
+    if (process.platform !== 'darwin') {
+        stopAiServer(); // Stop the AI server when all windows are closed
+        app.quit();
+    }
+});
+
+app.on('before-quit', () => {
+    stopAiServer(); // Ensure the AI server is stopped before quitting the app
 });
 
 // Handle file open and save dialogs
