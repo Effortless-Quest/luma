@@ -33,5 +33,5 @@ jobs:
       # Publish to GitHub Releases
       - name: Publish release
         env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+          GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: npm run build
