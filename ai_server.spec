@@ -3,7 +3,9 @@
 a = Analysis(
     ['app/ai_server.py'],
     pathex=[],
-    binaries=[],
+    binaries=[
+        ('python/python-3.9.13-embed-amd64.zip', 'python/python-3.9.13-embed-amd64.zip'),
+    ],
     datas=[],
     hiddenimports=[],
     hookspath=[],

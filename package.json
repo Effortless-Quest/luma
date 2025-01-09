@@ -28,12 +28,17 @@
       "app/**/*",
       "dist/**/*",
       "node_modules/**/*",
-      "package.json"
+      "package.json",
+      "python/**/*"
     ],
     "extraResources": [
       {
         "from": "app/dist/ai_server.exe",
         "to": "ai_server.exe"
+      },
+      {
+        "from": "python/python-3.9.13-embed-amd64.zip",
+        "to": "python/python-3.9.13-embed-amd64.zip"
       }
     ],
     "directories": {
