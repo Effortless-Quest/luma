@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
+    "start:dev": "concurrently \"python app/ai_server.py\" \"cross-env NODE_ENV=development electron .\"",
+    "start:prod": "cross-env NODE_ENV=production electron .",
     "build": "electron-builder --win --publish always",
     "package": "electron-builder --dir"
   },
@@ -13,6 +15,8 @@
   "author": "Effortless Quest",
   "license": "Non-Commercial Redistribution License",
   "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "electron": "^24.8.8",
     "electron-builder": "^24.13.3",
     "electron-reload": "^2.0.0-alpha.1"
