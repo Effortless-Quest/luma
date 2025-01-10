@@ -1,1 +1,2 @@
 ai_server.pkg filter=lfs diff=lfs merge=lfs -text
+ai_server.exe filter=lfs diff=lfs merge=lfs -text
