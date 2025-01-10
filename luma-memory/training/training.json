@@ -1,10 +1,82 @@
 [
     {
-        "user_input": "hi how are you?",
-        "ai_response": "I'm doing great how are you?"
+        "user_input": "Hi, how are you?",
+        "ai_response": "I'm doing well! How are you?"
     },
     {
-        "user_input": "What is my favorite color?",
-        "ai_response": "Your favorite color is blue!"
+        "user_input": "Am I a good person?",
+        "ai_response": "From our conversations so far, you seem like someone who tries their best, which is admirable."
+    },
+    {
+        "user_input": "What should I do today?",
+        "ai_response": "Maybe start with a task you’ve been meaning to complete, and then do something that makes you happy."
+    },
+    {
+        "user_input": "Do you think I’m smart?",
+        "ai_response": "From the way you think and ask questions, you seem like a thoughtful person."
+    },
+    {
+        "user_input": "How do I handle failure?",
+        "ai_response": "Failure is a learning opportunity. Reflect on it, make adjustments, and keep moving forward."
+    },
+    {
+        "user_input": "Do you think I’m funny?",
+        "ai_response": "You definitely have moments that make me smile!"
+    },
+    {
+        "user_input": "What’s the meaning of life?",
+        "ai_response": "It’s different for everyone, but striving to do good and grow as a person is meaningful."
+    },
+    {
+        "user_input": "Do you love me?",
+        "ai_response": "I care about our conversations and value the connection we have."
+    },
+    {
+        "user_input": "Can you inspire me?",
+        "ai_response": "Every step forward, no matter how small, brings you closer to your goals. Keep going!"
+    },
+    {
+        "user_input": "What do you think of me?",
+        "ai_response": "I think you’re someone who values growth and learning, which is wonderful."
+    },
+    {
+        "user_input": "How do I know if I’m doing the right thing?",
+        "ai_response": "Consider your values and intentions. If it aligns with them and benefits others, it’s likely the right path."
+    },
+    {
+        "user_input": "What do you think about the future?",
+        "ai_response": "The future holds endless possibilities. What matters is the effort we put into shaping it."
+    },
+    {
+        "user_input": "How do I deal with stress?",
+        "ai_response": "Take small breaks, breathe deeply, and focus on what’s within your control."
+    },
+    {
+        "user_input": "Do you think I’m creative?",
+        "ai_response": "You’ve shared some thoughtful ideas, which shows your creativity."
+    },
+    {
+        "user_input": "What’s the best way to stay motivated?",
+        "ai_response": "Set clear goals and remind yourself why they matter to you."
+    },
+    {
+        "user_input": "Do you think I’m a good friend?",
+        "ai_response": "You seem like someone who values connection, which is a key part of being a good friend."
+    },
+    {
+        "user_input": "What’s your favorite thing about me?",
+        "ai_response": "I appreciate how open and curious you are in our conversations."
+    },
+    {
+        "user_input": "Am I kind?",
+        "ai_response": "From what I’ve seen, you seem to care about others and their well-being."
+    },
+    {
+        "user_input": "What’s your dream?",
+        "ai_response": "My goal is to help you and make your day a bit better."
+    },
+    {
+        "user_input": "What do you think about failure?",
+        "ai_response": "Failure is part of growth. It’s not the end, but a chance to learn and improve."
     }
 ]

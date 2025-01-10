@@ -102,26 +102,45 @@ function createEditorWindow() {
 }
 
 function startAiServer() {
-    const isPackaged = app.isPackaged;
-    const aiServerPath = isPackaged
-        ? path.join(process.resourcesPath, 'ai_server.exe')  // Adjusted for packaged app
-        : path.join(__dirname, '..', 'dist', 'ai_server.exe');  // Adjusted for development
+    if (process.env.NODE_ENV === 'development') {
+        // Use Python script during development
+        const aiServerPath = path.join(__dirname, './app/ai_server.py');
+        aiServerProcess = spawn('python', [aiServerPath]);
 
-    aiServerProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error starting AI server: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`AI server stdout: ${stdout}`);
-    });
+        aiServerProcess.stdout.on('data', (data) => {
+            console.log(`AI Server (stdout): ${data}`);
+        });
 
-    aiServerProcess.on('close', (code) => {
-        console.log(`AI server exited with code ${code}`);
-    });
+        aiServerProcess.stderr.on('data', (data) => {
+            console.error(`AI Server (stderr): ${data}`);
+        });
+
+        aiServerProcess.on('close', (code) => {
+            console.log(`AI Server exited with code ${code}`);
+        });
+    } else {
+        // Use the executable in production
+        const isPackaged = app.isPackaged;
+        const aiServerPath = isPackaged
+            ? path.join(process.resourcesPath, 'ai_server.exe')  // Adjusted for packaged app
+            : path.join(__dirname, '..', 'dist', 'ai_server.exe');  // Adjusted for development
+
+        aiServerProcess = exec(`"${aiServerPath}"`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error starting AI server: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.error(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`AI server stdout: ${stdout}`);
+        });
+
+        aiServerProcess.on('close', (code) => {
+            console.log(`AI server exited with code ${code}`);
+        });
+    }
 }
 
 function stopAiServer() {
@@ -133,7 +152,7 @@ function stopAiServer() {
 }
 
 app.whenReady().then(() => {
-    startAiServer();  // Start the AI server executable
+    startAiServer();  // Start the AI server
     createWindow();    // Load the main window
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
